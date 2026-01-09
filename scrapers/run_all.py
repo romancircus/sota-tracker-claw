@@ -65,20 +65,34 @@ def update_models_from_scrape(scraped_data: dict, source: str):
             # Only update if source is 'auto' or same source
             # Don't overwrite 'manual' entries
             if existing["source"] in ["auto", source]:
+                # Get existing metrics and merge with new data
+                existing_metrics_row = db.execute(
+                    "SELECT metrics FROM models WHERE id = ?", (model_id,)
+                ).fetchone()
+                existing_metrics = {}
+                if existing_metrics_row and existing_metrics_row[0]:
+                    try:
+                        existing_metrics = json.loads(existing_metrics_row[0])
+                    except json.JSONDecodeError:
+                        pass
+
+                # Merge new scraped data into existing metrics
+                existing_metrics.update({
+                    "elo": model.get("elo"),
+                    "scraped_from": source,
+                    "scraped_at": scraped_data.get("scraped_at")
+                })
+
                 db.execute("""
                     UPDATE models
                     SET sota_rank = ?,
-                        metrics = json_patch(COALESCE(metrics, '{}'), ?),
+                        metrics = ?,
                         last_updated = ?,
                         source = ?
                     WHERE id = ?
                 """, (
-                    model.get("rank"),
-                    json.dumps({
-                        "elo": model.get("elo"),
-                        "scraped_from": source,
-                        "scraped_at": scraped_data.get("scraped_at")
-                    }),
+                    model.get("rank"),  # Use the actual scraped rank
+                    json.dumps(existing_metrics),
                     datetime.now().isoformat(),
                     source,
                     model_id

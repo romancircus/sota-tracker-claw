@@ -117,6 +117,9 @@ def _query_sota_impl(category: str, open_source_only: bool = True) -> str:
     db = get_db()
 
     # Build query based on open_source_only flag
+    # Get current month/year for header
+    current_date = datetime.now().strftime("%B %Y")
+
     if open_source_only:
         rows = db.execute("""
             SELECT name, release_date, sota_rank_open as rank, metrics, source_url, is_open_source
@@ -124,7 +127,7 @@ def _query_sota_impl(category: str, open_source_only: bool = True) -> str:
             WHERE category = ? AND is_sota = 1 AND is_open_source = 1
             ORDER BY sota_rank_open ASC
         """, (category,)).fetchall()
-        header = f"## SOTA Open-Source Models for {category.upper()} (January 2026)\n"
+        header = f"## SOTA Open-Source Models for {category.upper()} ({current_date})\n"
     else:
         rows = db.execute("""
             SELECT name, release_date, sota_rank as rank, metrics, source_url, is_open_source
@@ -132,7 +135,7 @@ def _query_sota_impl(category: str, open_source_only: bool = True) -> str:
             WHERE category = ? AND is_sota = 1
             ORDER BY sota_rank ASC
         """, (category,)).fetchall()
-        header = f"## ALL SOTA Models for {category.upper()} (January 2026)\n"
+        header = f"## ALL SOTA Models for {category.upper()} ({current_date})\n"
 
     if not rows:
         if open_source_only:

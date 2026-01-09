@@ -176,9 +176,20 @@ class LMArenaScraper:
     def _is_open_source(self, model_name: str) -> bool:
         """Determine if a model is open-source based on name."""
         closed_patterns = [
-            "gpt-4", "gpt-3", "gpt4", "o1-", "o3-",
-            "claude", "gemini", "bard", "palm",
-            "grok", "copilot"
+            # OpenAI (catch-all patterns first)
+            "gpt-", "gpt4", "gpt5", "chatgpt", "openai",
+            "o1-", "o1_", "o3-", "o3_", "dall-e", "dall_e",
+            # Anthropic
+            "claude",
+            # Google
+            "gemini", "bard", "palm", "imagen", "veo",
+            # xAI
+            "grok",
+            # Microsoft
+            "copilot",
+            # Other closed
+            "midjourney", "runway", "pika", "sora", "kling",
+            "elevenlabs", "suno", "udio"
         ]
         name_lower = model_name.lower()
         return not any(p in name_lower for p in closed_patterns)

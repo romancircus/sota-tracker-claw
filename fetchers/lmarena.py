@@ -146,8 +146,18 @@ class LMArenaFetcher:
     def _is_open_source(self, model_name: str) -> bool:
         """Heuristic to determine if model is open-source."""
         closed_patterns = [
-            "gpt-4", "gpt-3.5", "claude", "gemini", "palm",
-            "bard", "grok", "o1-", "o3-"
+            # OpenAI
+            "gpt-4", "gpt-3", "gpt-5", "gpt4", "gpt5", "chatgpt",
+            "o1-", "o1_", "o3-", "o3_", "dall-e",
+            # Anthropic
+            "claude",
+            # Google
+            "gemini", "palm", "bard", "imagen", "veo",
+            # xAI
+            "grok",
+            # Other closed
+            "copilot", "midjourney", "runway", "pika", "sora",
+            "kling", "elevenlabs", "suno", "udio"
         ]
         name_lower = model_name.lower()
         return not any(p in name_lower for p in closed_patterns)

@@ -249,11 +249,18 @@ class ArtificialAnalysisScraper:
     def _is_open_source(self, model_name: str) -> bool:
         """Determine if model is open-source."""
         closed_patterns = [
-            "gpt-", "gpt4", "o1-", "o3-",
-            "claude", "gemini", "bard", "palm", "grok",
-            "dall-e", "midjourney", "imagen",
-            "runway", "pika", "sora", "veo", "kling",
-            "elevenlabs", "suno", "udio"
+            # OpenAI
+            "gpt-", "gpt4", "gpt5", "chatgpt", "o1-", "o1_", "o3-", "o3_",
+            "dall-e", "dall_e",
+            # Anthropic
+            "claude",
+            # Google
+            "gemini", "bard", "palm", "imagen", "veo",
+            # xAI
+            "grok",
+            # Other closed
+            "midjourney", "runway", "pika", "sora", "kling",
+            "elevenlabs", "suno", "udio", "copilot"
         ]
         name_lower = model_name.lower()
         return not any(p in name_lower for p in closed_patterns)

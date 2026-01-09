@@ -19,14 +19,14 @@ AI models are released weekly. Keeping track is impossible. This project:
 
 ```bash
 # Latest data (updated daily)
-curl -O https://raw.githubusercontent.com/YOUR_USERNAME/sota-tracker-mcp/main/data/sota_export.json
-curl -O https://raw.githubusercontent.com/YOUR_USERNAME/sota-tracker-mcp/main/data/sota_export.csv
+curl -O https://raw.githubusercontent.com/romancircus/sota-tracker-mcp/main/data/sota_export.json
+curl -O https://raw.githubusercontent.com/romancircus/sota-tracker-mcp/main/data/sota_export.csv
 ```
 
 ### Option 2: Clone and Query Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sota-tracker-mcp.git
+git clone https://github.com/romancircus/sota-tracker-mcp.git
 cd sota-tracker-mcp
 
 # Query with sqlite3

@@ -176,7 +176,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "qwen-image-2512",
-            "name": "Qwen-Image-2512",
+            "name": "Qwen Image (Alibaba, Dec 2025)",
             "category": "image_gen",
             "release_date": "2025-12-31",
             "is_sota": True,
@@ -197,7 +197,7 @@ def seed_sota_models(db: sqlite3.Connection):
         # =====================================================================
         {
             "id": "qwen-image-edit-2511",
-            "name": "Qwen-Image-Edit-2511",
+            "name": "Qwen Image Edit (Alibaba, Nov 2025)",
             "category": "image_edit",
             "release_date": "2025-12-01",
             "is_sota": True,
@@ -213,7 +213,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "flux1-kontext",
-            "name": "FLUX.1-Kontext",
+            "name": "FLUX.1-Kontext (BFL)",
             "category": "image_edit",
             "release_date": "2025-06-01",
             "is_sota": True,
@@ -225,6 +225,54 @@ def seed_sota_models(db: sqlite3.Connection):
                 "why_sota": "Best for recoloring and style changes while preserving composition",
                 "strengths": ["Color transfer", "Style transfer", "Structure preservation", "Lighting changes"],
                 "use_cases": ["Recoloring products", "Season changes", "Time-of-day changes", "Style variations"]
+            }
+        },
+        {
+            "id": "instructpix2pix",
+            "name": "InstructPix2Pix",
+            "category": "image_edit",
+            "release_date": "2023-08-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 image editing, instruction-based editing, fast and lightweight",
+                "why_sota": "Pioneer of instruction-based editing, fast inference, well-supported",
+                "strengths": ["Fast", "Lightweight", "Well-documented", "Easy to use"],
+                "use_cases": ["Quick edits", "Style changes", "Simple modifications", "Prototyping"]
+            }
+        },
+        {
+            "id": "adobe-firefly-edit",
+            "name": "Adobe Firefly (Edit)",
+            "category": "image_edit",
+            "release_date": "2025-03-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 4,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#1 commercial image editing, Photoshop integration, generative fill",
+                "why_sota": "Best professional integration, Photoshop native, commercially safe",
+                "strengths": ["Photoshop integration", "Commercially safe", "Generative fill", "Professional"],
+                "use_cases": ["Professional editing", "Photoshop workflows", "Commercial projects", "Enterprise"]
+            }
+        },
+        {
+            "id": "ideogram-edit",
+            "name": "Ideogram Edit",
+            "category": "image_edit",
+            "release_date": "2025-01-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 5,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#2 commercial image editing, best text preservation during edits",
+                "why_sota": "Superior at preserving text when editing images with typography",
+                "strengths": ["Text preservation", "Typography", "Web interface", "Quality"],
+                "use_cases": ["Marketing materials", "Posters", "Typography edits", "Branding"]
             }
         },
 
@@ -316,7 +364,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "wan-2.2",
-            "name": "Wan 2.2",
+            "name": "Wan 2.2 (Alibaba)",
             "category": "video",
             "release_date": "2025-12-01",
             "is_sota": True,
@@ -324,7 +372,7 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 6,
             "sota_rank_open": 2,
             "metrics": {
-                "notes": "#2 open-source, MoE architecture, best human motion quality, 720p output",
+                "notes": "#2 open-source video (Alibaba Tongyi Wanxiang), MoE architecture, best human motion",
                 "why_sota": "Highest quality human motion in open-source, sophisticated MoE architecture",
                 "strengths": ["Human motion quality", "Natural movement", "Gesture accuracy", "Emotional expression"],
                 "use_cases": ["Human-centric videos", "Dance/movement", "Character animation", "Realistic humans"]
@@ -347,8 +395,8 @@ def seed_sota_models(db: sqlite3.Connection):
             }
         },
         {
-            "id": "wan2.1-i2v",
-            "name": "Wan2.1-I2V",
+            "id": "wan-2.1-i2v",
+            "name": "Wan 2.1 I2V (Alibaba)",
             "category": "video",
             "release_date": "2025-06-01",
             "is_sota": True,
@@ -356,7 +404,7 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 8,
             "sota_rank_open": 4,
             "metrics": {
-                "notes": "#4 open-source, image-to-video specialist, best creature/animal realism, silky smooth motion",
+                "notes": "#4 open-source video (Alibaba), image-to-video specialist, best creature/animal realism",
                 "why_sota": "Unmatched creature animation and texture detail from static images",
                 "strengths": ["Image-to-video", "Creature realism", "Texture detail", "Smooth motion"],
                 "use_cases": ["Animating photos", "Creature/animal content", "Nature scenes", "Texture-heavy subjects"]
@@ -368,7 +416,7 @@ def seed_sota_models(db: sqlite3.Connection):
         # =====================================================================
         {
             "id": "qwen3",
-            "name": "Qwen3",
+            "name": "Qwen 3 (Alibaba)",
             "category": "llm_local",
             "release_date": "2026-01-01",
             "is_sota": True,
@@ -376,7 +424,7 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 1,
             "sota_rank_open": 1,
             "metrics": {
-                "notes": "#1 local LLM, beats DeepSeek-V3 and Llama 4 on MMLU/BBH, hybrid thinking mode",
+                "notes": "#1 local LLM (Alibaba Qwen team), beats DeepSeek-V3 and Llama 4 on MMLU/BBH",
                 "why_sota": "New benchmark leader with innovative hybrid reasoning that adapts to task complexity",
                 "strengths": ["Benchmark scores", "Hybrid reasoning", "Efficiency", "Multilingual"],
                 "use_cases": ["General assistant", "Complex reasoning", "Multilingual tasks", "Research"]
@@ -384,7 +432,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "llama3.3-70b",
-            "name": "Llama 3.3-70B",
+            "name": "Llama 3.3-70B (Meta)",
             "category": "llm_local",
             "release_date": "2025-12-01",
             "is_sota": True,
@@ -401,7 +449,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "deepseek-v3",
-            "name": "DeepSeek-V3",
+            "name": "DeepSeek V3 (DeepSeek)",
             "category": "llm_local",
             "release_date": "2025-12-25",
             "is_sota": True,
@@ -418,7 +466,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "qwen2.5-72b",
-            "name": "Qwen2.5-72B",
+            "name": "Qwen 2.5-72B (Alibaba)",
             "category": "llm_local",
             "release_date": "2025-09-01",
             "is_sota": True,
@@ -435,7 +483,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "qwen2.5-32b",
-            "name": "Qwen2.5-32B",
+            "name": "Qwen 2.5-32B (Alibaba)",
             "category": "llm_local",
             "release_date": "2025-09-01",
             "is_sota": True,
@@ -452,7 +500,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "qwen2.5-7b",
-            "name": "Qwen2.5-7B",
+            "name": "Qwen 2.5-7B (Alibaba)",
             "category": "llm_local",
             "release_date": "2025-09-01",
             "is_sota": True,
@@ -521,7 +569,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "grok-4.1",
-            "name": "Grok 4.1",
+            "name": "Grok 4.1 (xAI)",
             "category": "llm_api",
             "release_date": "2025-11-01",
             "is_sota": True,
@@ -529,10 +577,58 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 4,
             "sota_rank_open": None,
             "metrics": {
-                "notes": "#4 API LLM, #1 LMArena Elo (1483), real-time X/Twitter data, uncensored (xAI)",
+                "notes": "#4 API LLM, #1 LMArena Elo, real-time X/Twitter data, uncensored",
                 "why_sota": "Highest human preference scores, real-time information access, fewer content restrictions",
                 "strengths": ["Human preference", "Real-time data", "Uncensored", "X integration"],
                 "use_cases": ["Current events", "Social analysis", "Less filtered responses", "Real-time research"]
+            }
+        },
+        {
+            "id": "deepseek-v3-api",
+            "name": "DeepSeek V3 API (DeepSeek)",
+            "category": "llm_api",
+            "release_date": "2025-12-25",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 5,
+            "sota_rank_open": 1,
+            "metrics": {
+                "notes": "#1 open-source API, $0.07/M input tokens, open weights available, GPT-4 class",
+                "why_sota": "Best cost/performance ratio, open weights for self-hosting option",
+                "strengths": ["Cheapest API", "Open weights", "GPT-4 class", "Self-host option"],
+                "use_cases": ["Cost-sensitive apps", "High-volume generation", "Self-hosting backup", "Budget projects"]
+            }
+        },
+        {
+            "id": "mistral-large-api",
+            "name": "Mistral Large API (Mistral)",
+            "category": "llm_api",
+            "release_date": "2025-09-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 6,
+            "sota_rank_open": 2,
+            "metrics": {
+                "notes": "#2 open-source API (EU), 123B MoE, strong multilingual, GDPR compliant",
+                "why_sota": "Best European option with GDPR compliance, strong multilingual support",
+                "strengths": ["EU-based", "GDPR compliant", "Multilingual", "MoE efficient"],
+                "use_cases": ["European deployments", "GDPR requirements", "Multilingual apps", "Enterprise EU"]
+            }
+        },
+        {
+            "id": "llama-3.3-together",
+            "name": "Llama 3.3-70B via Together.ai",
+            "category": "llm_api",
+            "release_date": "2025-12-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 7,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 open-source API, Meta's Llama hosted by Together, $0.88/M tokens",
+                "why_sota": "Best hosted Llama option with competitive pricing and reliability",
+                "strengths": ["Llama quality", "Together reliability", "Open weights", "Good pricing"],
+                "use_cases": ["Llama fans", "Open-source preference", "Self-host fallback", "Research"]
             }
         },
 
@@ -541,7 +637,7 @@ def seed_sota_models(db: sqlite3.Connection):
         # =====================================================================
         {
             "id": "qwen3-coder",
-            "name": "Qwen3-Coder",
+            "name": "Qwen 3 Coder (Alibaba)",
             "category": "llm_coding",
             "release_date": "2026-01-01",
             "is_sota": True,
@@ -557,7 +653,7 @@ def seed_sota_models(db: sqlite3.Connection):
         },
         {
             "id": "deepseek-v3-coder",
-            "name": "DeepSeek-V3",
+            "name": "DeepSeek V3 (DeepSeek)",
             "category": "llm_coding",
             "release_date": "2025-12-25",
             "is_sota": True,
@@ -601,6 +697,22 @@ def seed_sota_models(db: sqlite3.Connection):
                 "why_sota": "Best IDE integration with context-aware autocomplete and inline code editing",
                 "strengths": ["IDE integration", "Autocomplete", "Inline editing", "Context awareness"],
                 "use_cases": ["VS Code replacement", "Real-time coding assistance", "Autocomplete", "Quick edits"]
+            }
+        },
+        {
+            "id": "starcoder2-15b",
+            "name": "StarCoder2-15B (BigCode)",
+            "category": "llm_coding",
+            "release_date": "2024-02-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 5,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 open-source coder, 16K context, 600+ languages, trained on The Stack v2",
+                "why_sota": "Widest language support (600+), best for polyglot codebases",
+                "strengths": ["600+ languages", "Fast inference", "Low VRAM", "Well-documented"],
+                "use_cases": ["Multi-language projects", "Code completion", "Smaller deployments", "Edge devices"]
             }
         },
 
@@ -655,13 +767,45 @@ def seed_sota_models(db: sqlite3.Connection):
                 "use_cases": ["Professional production", "Multilingual content", "Voice cloning", "Enterprise"]
             }
         },
+        {
+            "id": "bark",
+            "name": "Bark (Suno)",
+            "category": "tts",
+            "release_date": "2024-04-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 4,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 open-source TTS, generates speech + music + sound effects, highly expressive",
+                "why_sota": "Most expressive open-source TTS, can generate non-speech audio",
+                "strengths": ["Expressiveness", "Sound effects", "Music capability", "Creative"],
+                "use_cases": ["Creative projects", "Sound design", "Expressive narration", "Games"]
+            }
+        },
+        {
+            "id": "coqui-xtts-v2",
+            "name": "Coqui XTTS v2",
+            "category": "tts",
+            "release_date": "2024-01-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 5,
+            "sota_rank_open": 4,
+            "metrics": {
+                "notes": "#4 open-source TTS, 17 languages, cross-lingual voice cloning",
+                "why_sota": "Best multilingual open-source with cross-lingual voice cloning",
+                "strengths": ["17 languages", "Cross-lingual cloning", "Open-source", "Good quality"],
+                "use_cases": ["Multilingual projects", "Voice cloning", "Localization", "International content"]
+            }
+        },
 
         # =====================================================================
-        # STT
+        # STT (Speech-to-Text)
         # =====================================================================
         {
             "id": "whisper-large-v3",
-            "name": "Whisper Large v3",
+            "name": "Whisper Large v3 (OpenAI)",
             "category": "stt",
             "release_date": "2024-11-01",
             "is_sota": True,
@@ -669,10 +813,74 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 1,
             "sota_rank_open": 1,
             "metrics": {
-                "notes": "#1 STT, best accuracy across languages, OpenAI open-weights, runs locally",
-                "why_sota": "Lowest word error rate, handles accents/noise well, 99 languages",
+                "notes": "#1 STT overall, best accuracy across 99 languages, open-weights",
+                "why_sota": "Lowest word error rate, handles accents/noise well, industry standard",
                 "strengths": ["Accuracy", "99 languages", "Noise robustness", "Local deployment"],
                 "use_cases": ["Transcription", "Meeting notes", "Subtitle generation", "Voice commands"]
+            }
+        },
+        {
+            "id": "canary-1b",
+            "name": "Canary 1B (NVIDIA)",
+            "category": "stt",
+            "release_date": "2025-03-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 2,
+            "sota_rank_open": 2,
+            "metrics": {
+                "notes": "#2 STT, optimized for NVIDIA GPUs, fast inference with TensorRT",
+                "why_sota": "Best performance on NVIDIA hardware, optimized for production",
+                "strengths": ["NVIDIA optimized", "Fast inference", "TensorRT", "Production-ready"],
+                "use_cases": ["Real-time transcription", "NVIDIA deployments", "Low-latency apps"]
+            }
+        },
+        {
+            "id": "faster-whisper-large-v3",
+            "name": "Faster Whisper Large v3",
+            "category": "stt",
+            "release_date": "2024-12-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 STT, CTranslate2 optimized Whisper, 4x faster than original",
+                "why_sota": "Same accuracy as Whisper but 4x faster, lower memory usage",
+                "strengths": ["4x faster", "Lower memory", "Same accuracy", "CPU efficient"],
+                "use_cases": ["Batch processing", "CPU deployment", "Resource-constrained environments"]
+            }
+        },
+        {
+            "id": "deepgram-nova-3",
+            "name": "Deepgram Nova 3",
+            "category": "stt",
+            "release_date": "2025-06-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 4,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#1 commercial STT API, real-time streaming, speaker diarization",
+                "why_sota": "Best commercial API with real-time streaming and advanced features",
+                "strengths": ["Real-time", "Streaming", "Speaker diarization", "API quality"],
+                "use_cases": ["Call centers", "Live captioning", "Meeting transcription", "Enterprise"]
+            }
+        },
+        {
+            "id": "assemblyai-universal-2",
+            "name": "AssemblyAI Universal-2",
+            "category": "stt",
+            "release_date": "2025-08-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 5,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#2 commercial STT API, best for long-form content, auto-chapters",
+                "why_sota": "Best for podcasts/videos with automatic chapters and summaries",
+                "strengths": ["Long-form content", "Auto-chapters", "Summaries", "Easy API"],
+                "use_cases": ["Podcasts", "Videos", "Content creators", "Media processing"]
             }
         },
 
@@ -711,13 +919,146 @@ def seed_sota_models(db: sqlite3.Connection):
                 "use_cases": ["Instrumentals", "EDM", "Background tracks", "Sound design"]
             }
         },
+        {
+            "id": "musicgen-large",
+            "name": "MusicGen Large (Meta)",
+            "category": "music",
+            "release_date": "2024-06-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 1,
+            "metrics": {
+                "notes": "#1 open-source music, 3.3B params, text/melody to music, runs locally",
+                "why_sota": "Best open-source quality, can condition on melody, local deployment",
+                "strengths": ["Open-source", "Melody conditioning", "Local deployment", "Good quality"],
+                "use_cases": ["Music prototyping", "Melody-based generation", "Research", "Local generation"]
+            }
+        },
+        {
+            "id": "stable-audio-2",
+            "name": "Stable Audio 2.0 (Stability AI)",
+            "category": "music",
+            "release_date": "2025-04-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 4,
+            "sota_rank_open": 2,
+            "metrics": {
+                "notes": "#2 open-source music, up to 3-min stereo audio, diffusion-based",
+                "why_sota": "Longest open-source generation (3 min), good stereo quality",
+                "strengths": ["3-min generation", "Stereo output", "Diffusion quality", "Open-source"],
+                "use_cases": ["Longer compositions", "Sound effects", "Ambient music", "Audio design"]
+            }
+        },
+        {
+            "id": "audiocraft-musicgen-melody",
+            "name": "AudioCraft MusicGen Melody (Meta)",
+            "category": "music",
+            "release_date": "2024-08-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 5,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 open-source music, melody-conditioned generation, AudioCraft family",
+                "why_sota": "Best for transforming existing melodies into full arrangements",
+                "strengths": ["Melody transformation", "Style transfer", "Arrangement", "Open-source"],
+                "use_cases": ["Cover versions", "Style transfer", "Arrangement assistance", "Music education"]
+            }
+        },
+
+        # =====================================================================
+        # 3D GENERATION
+        # =====================================================================
+        {
+            "id": "meshy-4",
+            "name": "Meshy-4",
+            "category": "3d",
+            "release_date": "2025-10-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 1,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#1 3D generation, text/image to 3D mesh, PBR textures, rigging support",
+                "why_sota": "Best overall quality and fastest generation, production-ready output",
+                "strengths": ["Quality", "Speed", "PBR textures", "Rigging"],
+                "use_cases": ["Game assets", "Product visualization", "3D printing", "AR/VR"]
+            }
+        },
+        {
+            "id": "tripo-2",
+            "name": "Tripo 2.0",
+            "category": "3d",
+            "release_date": "2025-09-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 2,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#2 3D generation, excellent topology, animation-ready meshes",
+                "why_sota": "Best mesh topology for animation, clean geometry",
+                "strengths": ["Clean topology", "Animation-ready", "Consistent style"],
+                "use_cases": ["Character modeling", "Animation assets", "Game characters"]
+            }
+        },
+        {
+            "id": "instantmesh",
+            "name": "InstantMesh",
+            "category": "3d",
+            "release_date": "2025-06-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 1,
+            "metrics": {
+                "notes": "#1 open-source 3D, single image to mesh, runs locally on RTX 3090+",
+                "why_sota": "Best open-source quality, fast inference, local deployment",
+                "strengths": ["Open-source", "Fast", "Local deployment", "Good quality"],
+                "use_cases": ["Prototyping", "Research", "Local generation", "Batch processing"],
+                "vram": "24GB"
+            }
+        },
+        {
+            "id": "triposr",
+            "name": "TripoSR (Stability AI)",
+            "category": "3d",
+            "release_date": "2024-03-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 4,
+            "sota_rank_open": 2,
+            "metrics": {
+                "notes": "#2 open-source 3D, fast single-image to 3D, collaboration with Tripo AI",
+                "why_sota": "Fastest open-source image-to-3D, good for quick prototyping",
+                "strengths": ["Speed", "Single image input", "Open-source", "Easy to run"],
+                "use_cases": ["Quick prototyping", "Concept art to 3D", "Game dev", "Research"]
+            }
+        },
+        {
+            "id": "openlrm",
+            "name": "OpenLRM",
+            "category": "3d",
+            "release_date": "2024-01-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 5,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 open-source 3D, large reconstruction model, good generalization",
+                "why_sota": "Best generalization across object types, research-friendly",
+                "strengths": ["Generalization", "Research-friendly", "Well-documented", "Active community"],
+                "use_cases": ["Research", "Novel objects", "Benchmarking", "Education"]
+            }
+        },
 
         # =====================================================================
         # EMBEDDINGS
         # =====================================================================
         {
             "id": "bge-m3",
-            "name": "BGE-M3",
+            "name": "BGE-M3 (BAAI)",
             "category": "embeddings",
             "release_date": "2024-06-01",
             "is_sota": True,
@@ -725,10 +1066,74 @@ def seed_sota_models(db: sqlite3.Connection):
             "sota_rank": 1,
             "sota_rank_open": 1,
             "metrics": {
-                "notes": "#1 embeddings, multilingual (100+ langs), hybrid dense+sparse+ColBERT retrieval",
+                "notes": "#1 embeddings overall, multilingual (100+ langs), hybrid dense+sparse+ColBERT",
                 "why_sota": "Best retrieval quality with hybrid approach, works across languages",
                 "strengths": ["Multilingual", "Hybrid retrieval", "Dense+Sparse", "ColBERT support"],
                 "use_cases": ["RAG systems", "Semantic search", "Multilingual search", "Document retrieval"]
+            }
+        },
+        {
+            "id": "gte-qwen2-7b",
+            "name": "GTE-Qwen2-7B (Alibaba)",
+            "category": "embeddings",
+            "release_date": "2025-01-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 2,
+            "sota_rank_open": 2,
+            "metrics": {
+                "notes": "#2 embeddings, 7B param model, best for long documents (8K context)",
+                "why_sota": "Highest quality for long document embedding, MTEB leader",
+                "strengths": ["Long context", "High quality", "8K tokens", "MTEB leader"],
+                "use_cases": ["Long documents", "Legal/medical RAG", "Research papers", "Book search"]
+            }
+        },
+        {
+            "id": "e5-mistral-7b",
+            "name": "E5-Mistral-7B (Microsoft)",
+            "category": "embeddings",
+            "release_date": "2024-03-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 embeddings, instruction-tuned, excellent zero-shot performance",
+                "why_sota": "Best zero-shot embedding quality, instruction-following embeddings",
+                "strengths": ["Zero-shot", "Instruction-tuned", "Versatile", "Good defaults"],
+                "use_cases": ["Zero-shot retrieval", "Custom domains", "Instruction-based search"]
+            }
+        },
+        {
+            "id": "jina-embeddings-v3",
+            "name": "Jina Embeddings v3",
+            "category": "embeddings",
+            "release_date": "2025-02-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 4,
+            "sota_rank_open": 4,
+            "metrics": {
+                "notes": "#4 embeddings, 8K context, late interaction support, task-specific LoRA",
+                "why_sota": "Most versatile with task-specific adapters, good long-context support",
+                "strengths": ["Task adapters", "8K context", "Versatile", "Late interaction"],
+                "use_cases": ["Task-specific retrieval", "Code search", "Multilingual", "Reranking"]
+            }
+        },
+        {
+            "id": "cohere-embed-v3",
+            "name": "Cohere Embed v3",
+            "category": "embeddings",
+            "release_date": "2024-11-01",
+            "is_sota": True,
+            "is_open_source": False,
+            "sota_rank": 5,
+            "sota_rank_open": None,
+            "metrics": {
+                "notes": "#1 commercial embeddings API, compression support, 100+ languages",
+                "why_sota": "Best commercial API with compression for cost savings",
+                "strengths": ["API quality", "Compression", "100+ languages", "Enterprise support"],
+                "use_cases": ["Enterprise RAG", "Production search", "Cost-optimized retrieval"]
             }
         },
     ]
