@@ -1,143 +1,182 @@
-# SOTA Tracker MCP Server
+# SOTA Tracker
 
-An MCP (Model Context Protocol) server that provides real-time SOTA (State of the Art) AI model information to Claude, preventing suggestions of outdated models.
+**The definitive open-source database of State-of-the-Art AI models.**
 
-## Problem
+Auto-updated daily from [LMArena](https://lmarena.ai), [Artificial Analysis](https://artificialanalysis.ai), and [HuggingFace](https://huggingface.co).
 
-Claude's training data is months old, causing it to suggest outdated models:
-- Redux (Oct 2024) - 15 months old
-- BAGEL (May 2025) - 8 months old
-- FLUX.1-dev - superseded by FLUX.2-dev
+## Why This Exists
 
-## Solution
+AI models are released weekly. Keeping track is impossible. This project:
 
-This MCP server provides tools that Claude **automatically queries** before suggesting any AI model:
+1. **Scrapes authoritative sources** - LMArena Elo rankings, Artificial Analysis benchmarks
+2. **Updates daily** via GitHub Actions
+3. **Exports to JSON/CSV** - Use in your own projects
+4. **Provides an MCP server** - Claude/AI assistants can query directly
 
+## Quick Start: Use the Data
+
+### Option 1: Download JSON/CSV
+
+```bash
+# Latest data (updated daily)
+curl -O https://raw.githubusercontent.com/YOUR_USERNAME/sota-tracker-mcp/main/data/sota_export.json
+curl -O https://raw.githubusercontent.com/YOUR_USERNAME/sota-tracker-mcp/main/data/sota_export.csv
 ```
-┌─────────────┐      query_sota("video")      ┌─────────────────┐
-│   Claude    │ ─────────────────────────────►│  SOTA Tracker   │
-│             │◄───────────────────────────── │  MCP Server     │
-└─────────────┘  "LTX-2 (Jan 2026)"           └─────────────────┘
+
+### Option 2: Clone and Query Locally
+
+```bash
+git clone https://github.com/YOUR_USERNAME/sota-tracker-mcp.git
+cd sota-tracker-mcp
+
+# Query with sqlite3
+sqlite3 data/sota.db "SELECT name, sota_rank FROM models WHERE category='llm_api' ORDER BY sota_rank LIMIT 10"
 ```
 
-## MCP Tools
+### Option 3: Use with Claude (MCP)
 
-| Tool | Description | Example |
-|------|-------------|---------|
-| `query_sota(category)` | Get current SOTA for category | `query_sota("video")` → "LTX-2" |
-| `check_freshness(model)` | Check if model is current | `check_freshness("FLUX.1-dev")` → "OUTDATED" |
-| `get_forbidden()` | List all outdated models | Returns blacklist |
-| `compare_models(a, b)` | Compare two models | Side-by-side comparison |
-| `recent_releases(days)` | New models in past N days | Latest releases |
+```bash
+# Install as MCP server
+claude mcp add --transport stdio --scope user sota-tracker \
+  -- python ~/sota-tracker-mcp/server.py
+
+# Now Claude can query SOTA data directly!
+```
+
+## Data Sources
+
+| Source | Data | Update Frequency |
+|--------|------|------------------|
+| [LMArena](https://lmarena.ai/leaderboard) | LLM Elo rankings (6M+ human votes) | Daily |
+| [Artificial Analysis](https://artificialanalysis.ai) | LLM benchmarks, pricing, speed | Daily |
+| [HuggingFace](https://huggingface.co) | Model downloads, trending | Daily |
+| Manual curation | Video, Image, Audio models | As needed |
 
 ## Categories
 
-- `image_gen` - Image generation (FLUX, Qwen-Image, Z-Image)
-- `image_edit` - Image editing (Qwen-Image-Edit, Kontext)
-- `video` - Video generation (LTX-2, Wan2.1, HunyuanVideo)
-- `llm_local` - Local LLMs (Qwen2.5, Llama3.3, DeepSeek)
-- `llm_api` - API LLMs (Claude, GPT, Gemini)
-- `tts` - Text-to-speech (ChatterboxTTS, F5-TTS)
-- `stt` - Speech-to-text (Whisper)
-- `music` - Music generation (Suno, Udio)
-- `3d` - 3D generation (Meshy, Tripo)
-- `embeddings` - Vector embeddings (BGE, E5)
+| Category | Description | Top Models (Jan 2026) |
+|----------|-------------|----------------------|
+| `llm_api` | Cloud LLM APIs | Gemini 3 Pro, Grok 4.1, Claude Opus 4.5 |
+| `llm_local` | Local LLMs (GGUF) | Qwen3, Llama 3.3, DeepSeek-V3 |
+| `llm_coding` | Code-focused LLMs | Qwen3-Coder, DeepSeek-V3 |
+| `image_gen` | Image generation | GPT Image 1.5, Z-Image-Turbo |
+| `video` | Video generation | Veo 3.1, LTX-2 |
+| `tts` | Text-to-speech | ChatterboxTTS, ElevenLabs |
+| `stt` | Speech-to-text | Whisper Large v3 |
+| `embeddings` | Vector embeddings | BGE-M3 |
 
-## Installation
+## MCP Tools
 
-### 1. Clone and setup
+When installed as an MCP server, Claude can use these tools:
+
+| Tool | Description |
+|------|-------------|
+| `query_sota(category)` | Get current SOTA for a category |
+| `check_freshness(model)` | Check if a model is current or outdated |
+| `get_forbidden()` | List outdated models to avoid |
+| `compare_models(a, b)` | Compare two models side-by-side |
+| `recent_releases(days)` | Models released in past N days |
+| `refresh_data()` | Force refresh from sources |
+| `cache_status()` | Check data freshness |
+
+## Run Your Own Scraper
 
 ```bash
-cd ~/Desktop/applications/sota-tracker-mcp
-python -m venv venv
-source venv/bin/activate
+# Install dependencies
 pip install -r requirements.txt
+pip install playwright
+playwright install chromium
+
+# Run all scrapers
+python scrapers/run_all.py --export
+
+# Output:
+# data/sota_export.json
+# data/sota_export.csv
+# data/lmarena_latest.json
 ```
 
-### 2. Initialize database
+## GitHub Actions (Auto-Update)
 
-```bash
-python init_db.py
-```
+This repo uses GitHub Actions to:
+- **Daily**: Scrape all sources, update database, commit changes
+- **Weekly**: Create a tagged release with JSON/CSV exports
 
-### 3. Install MCP globally
-
-```bash
-claude mcp add --transport stdio --scope user sota-tracker \
-  -- ~/Desktop/applications/sota-tracker-mcp/venv/bin/python \
-     ~/Desktop/applications/sota-tracker-mcp/server.py
-```
-
-### 4. Restart Claude Code
-
-The MCP server will now be available in all Claude Code sessions.
-
-## Testing
-
-```bash
-# Test tools directly
-source venv/bin/activate
-python -c "
-from server import _query_sota_impl, _check_freshness_impl
-print(_query_sota_impl('video'))
-print(_check_freshness_impl('FLUX.1-dev'))
-"
-```
-
-## Updating SOTA Data
-
-### Manual update
-
-Edit `data/forbidden.json` for the blacklist, then run:
-
-```bash
-python init_db.py  # Re-seeds from scratch
-```
-
-### Weekly cron (optional)
-
-```bash
-# Add to crontab -e
-0 3 * * 0 cd ~/Desktop/applications/sota-tracker-mcp && venv/bin/python update.py
-```
+To enable on your fork:
+1. Fork this repo
+2. Go to Settings → Actions → Enable workflows
+3. Data will auto-update daily at 6 AM UTC
 
 ## File Structure
 
 ```
 sota-tracker-mcp/
-├── server.py              # FastMCP server
-├── init_db.py             # Database initialization
-├── requirements.txt       # Dependencies
+├── server.py                    # MCP server
+├── init_db.py                   # Database initialization
+├── requirements.txt             # Dependencies
 ├── data/
-│   ├── sota.db            # SQLite database
-│   └── forbidden.json     # Human-curated blacklist
-└── scrapers/              # (Future) automated scrapers
+│   ├── sota.db                  # SQLite database
+│   ├── sota_export.json         # Full JSON export
+│   ├── sota_export.csv          # CSV export
+│   ├── lmarena_latest.json      # Raw LMArena data
+│   └── forbidden.json           # Outdated models list
+├── scrapers/
+│   ├── lmarena.py               # LMArena scraper (Playwright)
+│   ├── artificial_analysis.py   # AA scraper (Playwright)
+│   └── run_all.py               # Unified runner
+├── fetchers/
+│   ├── huggingface.py           # HuggingFace API
+│   └── cache_manager.py         # Smart caching
+└── .github/workflows/
+    └── daily-scrape.yml         # GitHub Actions workflow
 ```
 
-## Current SOTA (January 2026)
+## Contributing
 
-### Image Generation
-1. Qwen-Image-2512 (Dec 2025)
-2. Z-Image-Turbo (Nov 2025)
-3. FLUX.2-dev (Nov 2025)
+Found a model that's missing or incorrectly ranked?
 
-### Video Generation
-1. LTX-2 (Jan 2026) - with audio
-2. Wan 2.6 (Dec 2025) - with audio
-3. HunyuanVideo 1.5 (Nov 2025)
+1. **For manual additions**: Edit `init_db.py` and submit a PR
+2. **For scraper improvements**: Edit files in `scrapers/`
+3. **For new data sources**: Add a new scraper and update `run_all.py`
 
-### Local LLMs
-1. Qwen2.5-72B
-2. Llama3.3-70B
-3. DeepSeek-V3
+## API Endpoints (Coming Soon)
 
-### Forbidden Models
-- FLUX.1-dev → Use FLUX.2-dev
-- Redux → Use Qwen-Image-Edit-2511
-- BAGEL, OmniGen2 → Use Qwen-Image-2512
-- SD 1.5/2.0/XL → Use any SOTA model
-- Llama 2 → Use Llama 3.3
+Planning to add a simple REST API:
+- `GET /api/v1/models?category=llm_api`
+- `GET /api/v1/models/:id`
+- `GET /api/v1/rankings?source=lmarena`
+
+## Data Attribution & Legal
+
+This project aggregates **publicly available benchmark data** from third-party sources. We do not claim ownership of rankings, Elo scores, or benchmark results.
+
+### Data Sources (Used With Permission)
+
+| Source | Data | Permission |
+|--------|------|------------|
+| [LMArena](https://lmarena.ai) | Chatbot Arena Elo rankings | `robots.txt: Allow: /` |
+| [Artificial Analysis](https://artificialanalysis.ai) | LLM quality benchmarks | `robots.txt: Allow: /` (explicitly allows AI crawlers) |
+| [HuggingFace](https://huggingface.co) | Model metadata, downloads | Public API |
+| [Open LLM Leaderboard](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard) | Open-source LLM benchmarks | CC-BY license |
+
+### Disclaimer
+
+- All benchmark scores and rankings are the intellectual work of their respective sources
+- This project provides aggregation and tooling, not original benchmark data
+- Data is scraped once daily to minimize server load
+- If you are a data source and wish to be excluded, please open an issue
+
+### Fair Use
+
+This project:
+- Aggregates factual data (not copyrightable)
+- Adds value through tooling (MCP server, unified format)
+- Attributes all sources with links
+- Does not compete commercially with sources
+- Respects robots.txt permissions
 
 ## License
 
-MIT
+MIT - See [LICENSE](LICENSE) for details.
+
+The **code** in this repository is MIT licensed. The **data** belongs to its respective sources (see attribution above).
