@@ -34,7 +34,7 @@ from typing import Optional
 
 from fastmcp import FastMCP
 
-from utils.db import get_db as _get_db
+from utils.db import get_db as _get_db, get_db_context as _get_db_context
 from utils.hardware import (
     get_profile_with_defaults,
     configure_profile,
@@ -94,8 +94,13 @@ mcp = FastMCP(
 
 
 def get_db():
-    """Get database connection with row factory."""
+    """Get database connection with row factory. Caller must close."""
     return _get_db(DB_PATH)
+
+
+def get_db_context():
+    """Get database connection as context manager (auto-closes)."""
+    return _get_db_context(DB_PATH)
 
 
 def load_forbidden():
@@ -134,28 +139,27 @@ def _query_sota_impl(category: str, open_source_only: bool = True) -> str:
         except Exception as e:
             refresh_note = f"\n[Cache error: {e}. Using cached data.]\n"
 
-    db = get_db()
-
     # Build query based on open_source_only flag
     # Get current month/year for header
     current_date = datetime.now().strftime("%B %Y")
 
-    if open_source_only:
-        rows = db.execute("""
-            SELECT name, release_date, sota_rank_open as rank, metrics, source_url, is_open_source
-            FROM models
-            WHERE category = ? AND is_sota = 1 AND is_open_source = 1
-            ORDER BY sota_rank_open ASC
-        """, (category,)).fetchall()
-        header = f"## SOTA Open-Source Models for {category.upper()} ({current_date})\n"
-    else:
-        rows = db.execute("""
-            SELECT name, release_date, sota_rank as rank, metrics, source_url, is_open_source
-            FROM models
-            WHERE category = ? AND is_sota = 1
-            ORDER BY sota_rank ASC
-        """, (category,)).fetchall()
-        header = f"## ALL SOTA Models for {category.upper()} ({current_date})\n"
+    with get_db_context() as db:
+        if open_source_only:
+            rows = db.execute("""
+                SELECT name, release_date, sota_rank_open as rank, metrics, source_url, is_open_source
+                FROM models
+                WHERE category = ? AND is_sota = 1 AND is_open_source = 1
+                ORDER BY sota_rank_open ASC
+            """, (category,)).fetchall()
+            header = f"## SOTA Open-Source Models for {category.upper()} ({current_date})\n"
+        else:
+            rows = db.execute("""
+                SELECT name, release_date, sota_rank as rank, metrics, source_url, is_open_source
+                FROM models
+                WHERE category = ? AND is_sota = 1
+                ORDER BY sota_rank ASC
+            """, (category,)).fetchall()
+            header = f"## ALL SOTA Models for {category.upper()} ({current_date})\n"
 
     if not rows:
         if open_source_only:
@@ -208,28 +212,28 @@ def _check_freshness_impl(model_name: str) -> str:
                 f"USE INSTEAD: {model['replacement']}"
             )
 
-    db = get_db()
-    row = db.execute("""
-        SELECT name, category, is_sota, is_open_source, sota_rank, sota_rank_open, release_date
-        FROM models
-        WHERE LOWER(name) = LOWER(?)
-    """, (model_name,)).fetchone()
+    with get_db_context() as db:
+        row = db.execute("""
+            SELECT name, category, is_sota, is_open_source, sota_rank, sota_rank_open, release_date
+            FROM models
+            WHERE LOWER(name) = LOWER(?)
+        """, (model_name,)).fetchone()
 
-    if row:
-        open_badge = "open-source" if row["is_open_source"] else "closed-source"
-        if row["is_sota"]:
-            rank = row["sota_rank_open"] if row["is_open_source"] else row["sota_rank"]
-            rank_type = "open-source" if row["is_open_source"] else "overall"
-            return f"CURRENT: {row['name']} is #{rank} {rank_type} SOTA for {row['category']} ({open_badge}, Released: {row['release_date']})"
-        else:
-            # Find current SOTA for same category
-            sota = db.execute("""
-                SELECT name FROM models
-                WHERE category = ? AND is_sota = 1 AND sota_rank = 1
-            """, (row["category"],)).fetchone()
+        if row:
+            open_badge = "open-source" if row["is_open_source"] else "closed-source"
+            if row["is_sota"]:
+                rank = row["sota_rank_open"] if row["is_open_source"] else row["sota_rank"]
+                rank_type = "open-source" if row["is_open_source"] else "overall"
+                return f"CURRENT: {row['name']} is #{rank} {rank_type} SOTA for {row['category']} ({open_badge}, Released: {row['release_date']})"
+            else:
+                # Find current SOTA for same category
+                sota = db.execute("""
+                    SELECT name FROM models
+                    WHERE category = ? AND is_sota = 1 AND sota_rank = 1
+                """, (row["category"],)).fetchone()
 
-            replacement = sota["name"] if sota else "Check query_sota() for current options"
-            return f"OUTDATED: {row['name']} is no longer SOTA.\nUSE INSTEAD: {replacement}"
+                replacement = sota["name"] if sota else "Check query_sota() for current options"
+                return f"OUTDATED: {row['name']} is no longer SOTA.\nUSE INSTEAD: {replacement}"
 
     return f"UNKNOWN: Model '{model_name}' not in database. Use query_sota() to find current options."
 
@@ -263,9 +267,8 @@ def _get_forbidden_impl() -> str:
 
 def _compare_models_impl(model_a: str, model_b: str) -> str:
     """Implementation of compare_models."""
-    db = get_db()
 
-    def get_model_info(name: str) -> Optional[dict]:
+    def get_model_info(db, name: str) -> Optional[dict]:
         row = db.execute("""
             SELECT name, category, release_date, is_sota, is_open_source, sota_rank, sota_rank_open, metrics
             FROM models WHERE LOWER(name) = LOWER(?)
@@ -287,8 +290,9 @@ def _compare_models_impl(model_a: str, model_b: str) -> str:
                 }
         return None
 
-    info_a = get_model_info(model_a)
-    info_b = get_model_info(model_b)
+    with get_db_context() as db:
+        info_a = get_model_info(db, model_a)
+        info_b = get_model_info(db, model_b)
 
     if not info_a and not info_b:
         return f"Neither '{model_a}' nor '{model_b}' found in database."
@@ -353,24 +357,23 @@ def _recent_releases_impl(days: int = 30, open_source_only: bool = True) -> str:
     if not isinstance(days, int) or days < 1 or days > 365:
         return "Error: days must be an integer between 1 and 365"
 
-    db = get_db()
-
     cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
-    if open_source_only:
-        rows = db.execute("""
-            SELECT name, category, release_date, is_sota, sota_rank_open as rank, is_open_source
-            FROM models
-            WHERE release_date >= ? AND is_open_source = 1
-            ORDER BY release_date DESC
-        """, (cutoff,)).fetchall()
-    else:
-        rows = db.execute("""
-            SELECT name, category, release_date, is_sota, sota_rank as rank, is_open_source
-            FROM models
-            WHERE release_date >= ?
-            ORDER BY release_date DESC
-        """, (cutoff,)).fetchall()
+    with get_db_context() as db:
+        if open_source_only:
+            rows = db.execute("""
+                SELECT name, category, release_date, is_sota, sota_rank_open as rank, is_open_source
+                FROM models
+                WHERE release_date >= ? AND is_open_source = 1
+                ORDER BY release_date DESC
+            """, (cutoff,)).fetchall()
+        else:
+            rows = db.execute("""
+                SELECT name, category, release_date, is_sota, sota_rank as rank, is_open_source
+                FROM models
+                WHERE release_date >= ?
+                ORDER BY release_date DESC
+            """, (cutoff,)).fetchall()
 
     if not rows:
         return f"No models released in the past {days} days."
@@ -453,24 +456,24 @@ def _query_sota_for_hardware_impl(
         concurrent_vram_gb = get_concurrent_vram_estimate(concurrent_workload)
     available_vram = max(0, total_vram - concurrent_vram_gb)
 
-    db = get_db()
     current_date = datetime.now().strftime("%B %Y")
 
     # Query SOTA models (open-source for local categories, all for API)
-    if category in ["llm_api"]:
-        rows = db.execute("""
-            SELECT name, release_date, sota_rank as rank, metrics, source_url, is_open_source
-            FROM models
-            WHERE category = ? AND is_sota = 1
-            ORDER BY sota_rank ASC
-        """, (category,)).fetchall()
-    else:
-        rows = db.execute("""
-            SELECT name, release_date, sota_rank_open as rank, metrics, source_url, is_open_source
-            FROM models
-            WHERE category = ? AND is_sota = 1 AND is_open_source = 1
-            ORDER BY sota_rank_open ASC
-        """, (category,)).fetchall()
+    with get_db_context() as db:
+        if category in ["llm_api"]:
+            rows = db.execute("""
+                SELECT name, release_date, sota_rank as rank, metrics, source_url, is_open_source
+                FROM models
+                WHERE category = ? AND is_sota = 1
+                ORDER BY sota_rank ASC
+            """, (category,)).fetchall()
+        else:
+            rows = db.execute("""
+                SELECT name, release_date, sota_rank_open as rank, metrics, source_url, is_open_source
+                FROM models
+                WHERE category = ? AND is_sota = 1 AND is_open_source = 1
+                ORDER BY sota_rank_open ASC
+            """, (category,)).fetchall()
 
     if not rows:
         return f"No SOTA models found for '{category}'"
@@ -587,15 +590,14 @@ def _get_model_recommendation_impl(
     concurrent_vram = get_concurrent_vram_estimate(concurrent_workload) if concurrent_workload else 0
     available_vram = max(0, total_vram - concurrent_vram)
 
-    db = get_db()
-
     # Query models
-    rows = db.execute("""
-        SELECT name, metrics, source_url
-        FROM models
-        WHERE category = ? AND is_sota = 1 AND is_open_source = 1
-        ORDER BY sota_rank_open ASC
-    """, (category,)).fetchall()
+    with get_db_context() as db:
+        rows = db.execute("""
+            SELECT name, metrics, source_url
+            FROM models
+            WHERE category = ? AND is_sota = 1 AND is_open_source = 1
+            ORDER BY sota_rank_open ASC
+        """, (category,)).fetchall()
 
     if not rows:
         return f"No models found for task '{task}'"
@@ -963,7 +965,14 @@ def main():
             if arg == "--host" and i + 1 < len(sys.argv):
                 host = sys.argv[i + 1]
             if arg == "--port" and i + 1 < len(sys.argv):
-                port = int(sys.argv[i + 1])
+                try:
+                    port = int(sys.argv[i + 1])
+                    if not (1 <= port <= 65535):
+                        print(f"Error: Port must be between 1 and 65535, got {port}")
+                        sys.exit(1)
+                except ValueError:
+                    print(f"Error: Invalid port '{sys.argv[i + 1]}' - must be an integer")
+                    sys.exit(1)
         print(f"Starting HTTP server on {host}:{port}")
         mcp.run(transport="http", host=host, port=port)
     else:
