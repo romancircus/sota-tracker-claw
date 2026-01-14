@@ -14,6 +14,8 @@ This ensures:
 
 import json
 import sqlite3
+import threading
+from contextlib import contextmanager
 from datetime import datetime, date
 from pathlib import Path
 from typing import Optional
@@ -47,12 +49,42 @@ class CacheManager:
         self.hf_fetcher = HuggingFaceFetcher()
         self.lm_fetcher = LMArenaFetcher()
         self.aa_fetcher = ArtificialAnalysisFetcher()
+        # Thread lock to prevent race conditions during cache refresh
+        self._refresh_lock = threading.Lock()
+        # Per-category locks for finer-grained concurrency
+        self._category_locks: dict[str, threading.Lock] = {}
 
     def get_db(self) -> sqlite3.Connection:
-        """Get database connection."""
-        db = sqlite3.connect(str(self.db_path))
+        """
+        Get database connection. Caller must close.
+
+        DEPRECATED: Use get_db_context() instead to ensure connections are always closed.
+        This method remains for backward compatibility but should not be used in new code.
+        """
+        db = sqlite3.connect(str(self.db_path), timeout=30.0)
         db.row_factory = sqlite3.Row
+        # Enable WAL mode for better concurrent access
+        db.execute("PRAGMA journal_mode=WAL")
         return db
+
+    @contextmanager
+    def get_db_context(self):
+        """Get database connection as context manager (auto-closes)."""
+        db = sqlite3.connect(str(self.db_path), timeout=30.0)
+        db.row_factory = sqlite3.Row
+        # Enable WAL mode for better concurrent access
+        db.execute("PRAGMA journal_mode=WAL")
+        try:
+            yield db
+        finally:
+            db.close()
+
+    def _get_category_lock(self, category: str) -> threading.Lock:
+        """Get or create a lock for a specific category."""
+        with self._refresh_lock:
+            if category not in self._category_locks:
+                self._category_locks[category] = threading.Lock()
+            return self._category_locks[category]
 
     def is_cache_fresh(self, category: str) -> bool:
         """Check if category was fetched today."""
@@ -77,6 +109,8 @@ class CacheManager:
         """
         Refresh category data if stale (not fetched today).
 
+        Thread-safe: Uses per-category locks to prevent race conditions.
+
         Returns:
             {
                 "refreshed": bool,
@@ -85,61 +119,66 @@ class CacheManager:
                 "error": str or None
             }
         """
-        if self.is_cache_fresh(category):
-            return {
-                "refreshed": False,
-                "source": "cache",
-                "models_updated": 0,
-                "error": None
-            }
+        # Acquire per-category lock to prevent concurrent refresh attempts
+        lock = self._get_category_lock(category)
+        with lock:
+            # Double-check cache freshness after acquiring lock
+            # (another thread may have refreshed while we waited)
+            if self.is_cache_fresh(category):
+                return {
+                    "refreshed": False,
+                    "source": "cache",
+                    "models_updated": 0,
+                    "error": None
+                }
 
-        # Need to refresh - fetch from sources
-        sources = self.CATEGORY_SOURCES.get(category, [])
-        if not sources:
-            # No automatic sources for this category, use manual data
-            self._update_cache_status(category, "manual", True, None)
-            return {
-                "refreshed": True,
-                "source": "manual",
-                "models_updated": 0,
-                "error": None
-            }
+            # Need to refresh - fetch from sources
+            sources = self.CATEGORY_SOURCES.get(category, [])
+            if not sources:
+                # No automatic sources for this category, use manual data
+                self._update_cache_status(category, "manual", True, None)
+                return {
+                    "refreshed": True,
+                    "source": "manual",
+                    "models_updated": 0,
+                    "error": None
+                }
 
-        # Try each source
-        models = []
-        source_used = None
-        error = None
+            # Try each source
+            models = []
+            source_used = None
+            error = None
 
-        for source in sources:
-            try:
-                fetched = self._fetch_from_source(source, category)
-                if fetched:
-                    models.extend(fetched)
-                    source_used = source
-                    break  # Got data, stop trying
-            except Exception as e:
-                error = str(e)
-                continue
+            for source in sources:
+                try:
+                    fetched = self._fetch_from_source(source, category)
+                    if fetched:
+                        models.extend(fetched)
+                        source_used = source
+                        break  # Got data, stop trying
+                except Exception as e:
+                    error = str(e)
+                    continue
 
-        if models:
-            # Update database with fresh data
-            count = self._update_models(category, models)
-            self._update_cache_status(category, source_used, True, None)
-            return {
-                "refreshed": True,
-                "source": source_used,
-                "models_updated": count,
-                "error": None
-            }
-        else:
-            # All sources failed - mark as attempted but keep old data
-            self._update_cache_status(category, source_used, False, error)
-            return {
-                "refreshed": False,
-                "source": source_used,
-                "models_updated": 0,
-                "error": error or "No data returned from sources"
-            }
+            if models:
+                # Update database with fresh data
+                count = self._update_models(category, models)
+                self._update_cache_status(category, source_used, True, None)
+                return {
+                    "refreshed": True,
+                    "source": source_used,
+                    "models_updated": count,
+                    "error": None
+                }
+            else:
+                # All sources failed - mark as attempted but keep old data
+                self._update_cache_status(category, source_used, False, error)
+                return {
+                    "refreshed": False,
+                    "source": source_used,
+                    "models_updated": 0,
+                    "error": error or "No data returned from sources"
+                }
 
     def _fetch_from_source(self, source: str, category: str) -> list[dict]:
         """Fetch data from a specific source."""

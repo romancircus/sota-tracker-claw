@@ -9,6 +9,22 @@ from typing import Any, Optional
 # Path to hardware profiles config
 DATA_DIR = Path(__file__).parent.parent / "data"
 HARDWARE_PROFILES_PATH = DATA_DIR / "hardware_profiles.json"
+VRAM_ESTIMATES_PATH = DATA_DIR / "vram_estimates.json"
+
+# Default VRAM estimates for concurrent workloads (in GB)
+# These are conservative estimates based on common model requirements as of Jan 2026
+# Users can override these via vram_estimates.json
+DEFAULT_VRAM_ESTIMATES = {
+    "image_gen": 24,      # FLUX.2-dev, Qwen-Image (24GB for quality)
+    "video_gen": 24,      # HunyuanVideo, Wan2.6 (24GB typical)
+    "image_edit": 18,     # FLUX.1-Kontext (18GB)
+    "stable_diffusion": 12,  # SD 3.5 Large (12GB)
+    "comfyui": 16,        # ComfyUI with typical workflow
+    "blender": 8,         # Blender GPU rendering
+    "gaming": 12,         # Modern games at high settings
+    "desktop": 2,         # Normal desktop compositing
+    "none": 0
+}
 
 # Default profile template
 DEFAULT_PROFILE = {
@@ -153,17 +169,38 @@ def get_available_vram(concurrent_usage_gb: int = 0) -> int:
     return max(0, available)
 
 
+def load_vram_estimates() -> dict:
+    """Load VRAM estimates from config file, falling back to defaults."""
+    if not VRAM_ESTIMATES_PATH.exists():
+        return DEFAULT_VRAM_ESTIMATES.copy()
+
+    try:
+        with open(VRAM_ESTIMATES_PATH, "r") as f:
+            user_estimates = json.load(f)
+            # Merge with defaults - user overrides take precedence
+            result = DEFAULT_VRAM_ESTIMATES.copy()
+            result.update(user_estimates)
+            return result
+    except (json.JSONDecodeError, IOError):
+        return DEFAULT_VRAM_ESTIMATES.copy()
+
+
+def save_vram_estimates(estimates: dict) -> None:
+    """Save custom VRAM estimates to config file."""
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    with open(VRAM_ESTIMATES_PATH, "w") as f:
+        json.dump(estimates, f, indent=2)
+
+
 def get_concurrent_vram_estimate(workload: str) -> int:
-    """Estimate VRAM usage for common concurrent workloads."""
-    estimates = {
-        "image_gen": 24,      # FLUX.2-dev, Qwen-Image
-        "video_gen": 24,      # HunyuanVideo, Wan2.2
-        "image_edit": 18,     # FLUX.1-Kontext
-        "stable_diffusion": 12,
-        "comfyui": 16,
-        "blender": 8,
-        "gaming": 12,
-        "desktop": 2,         # Normal desktop compositing
-        "none": 0
-    }
-    return estimates.get(workload.lower(), 0) if workload else 0
+    """
+    Estimate VRAM usage for common concurrent workloads.
+
+    Loads from vram_estimates.json if available, otherwise uses defaults.
+    Users can customize estimates by creating/editing data/vram_estimates.json.
+    """
+    if not workload:
+        return 0
+
+    estimates = load_vram_estimates()
+    return estimates.get(workload.lower(), 0)

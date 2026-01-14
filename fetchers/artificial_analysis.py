@@ -79,8 +79,13 @@ class ArtificialAnalysisFetcher:
         """
         models = []
 
+        # Limit content length to prevent ReDoS attacks (10MB max)
+        if len(html) > 10 * 1024 * 1024:
+            html = html[:10 * 1024 * 1024]
+
         # Try to find embedded JSON data (Next.js pattern)
-        json_match = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
+        # Use [^<]* instead of .*? to prevent catastrophic backtracking
+        json_match = re.search(r'<script id="__NEXT_DATA__" type="application/json">([^<]+)</script>', html)
         if json_match:
             try:
                 next_data = json.loads(json_match.group(1))
@@ -120,14 +125,16 @@ class ArtificialAnalysisFetcher:
 
         # Simple regex to find model names and scores
         # Pattern varies by page, this is a best-effort fallback
+        # Using non-greedy bounded patterns to prevent ReDoS
         patterns = [
             r'<td[^>]*>(\d+)</td>\s*<td[^>]*>([^<]+)</td>\s*<td[^>]*>(\d+\.?\d*)</td>',
-            r'"name":\s*"([^"]+)".*?"elo":\s*(\d+)',
-            r'"model":\s*"([^"]+)".*?"score":\s*(\d+\.?\d*)',
+            r'"name":\s*"([^"]{1,100})"[^}]{0,200}"elo":\s*(\d+)',
+            r'"model":\s*"([^"]{1,100})"[^}]{0,200}"score":\s*(\d+\.?\d*)',
         ]
 
         for pattern in patterns:
-            matches = re.findall(pattern, html, re.DOTALL)
+            # Avoid DOTALL where possible to limit backtracking scope
+            matches = re.findall(pattern, html)
             if matches:
                 for rank, match in enumerate(matches[:20], 1):
                     if len(match) >= 2:

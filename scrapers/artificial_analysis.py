@@ -218,8 +218,13 @@ class ArtificialAnalysisScraper:
         models = []
         content = page.content()
 
+        # Limit content length to prevent ReDoS attacks (10MB max)
+        if len(content) > 10 * 1024 * 1024:
+            content = content[:10 * 1024 * 1024]
+
         # Try to find Next.js data
-        next_data_match = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', content, re.DOTALL)
+        # Use [^<]+ instead of .*? to prevent catastrophic backtracking
+        next_data_match = re.search(r'<script id="__NEXT_DATA__" type="application/json">([^<]+)</script>', content)
         if next_data_match:
             try:
                 data = json.loads(next_data_match.group(1))

@@ -139,11 +139,16 @@ class LMArenaScraper:
         models = []
         content = page.content()
 
+        # Limit content length to prevent ReDoS attacks (10MB max)
+        if len(content) > 10 * 1024 * 1024:
+            content = content[:10 * 1024 * 1024]
+
         # Look for patterns like "1. Model Name 1234" or JSON-like structures
         # This is a best-effort fallback
 
         # Try to find JSON data in script tags
-        json_match = re.search(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>', content, re.DOTALL)
+        # Use [^<]+ instead of .*? to prevent catastrophic backtracking
+        json_match = re.search(r'<script[^>]*type="application/json"[^>]*>([^<]+)</script>', content)
         if json_match:
             try:
                 data = json.loads(json_match.group(1))
