@@ -1,0 +1,389 @@
+{
+  "source": "civitai",
+  "url": "https://civitai.com/api/v1/models?limit=20&sort=Highest%20Rated&types=Checkpoint&nsfw=false",
+  "scraped_at": "2026-01-15T07:01:30.250334",
+  "model_count": 20,
+  "model_type": "Checkpoint",
+  "models": [
+    {
+      "rank": 1,
+      "name": "Pony Diffusion V6 XL",
+      "id": "civitai-257749",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 819806,
+        "favorites": null,
+        "comments": 1600,
+        "base_model": "Pony",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 257749,
+        "civitai_url": "https://civitai.com/models/257749"
+      }
+    },
+    {
+      "rank": 2,
+      "name": "majicMIX realistic \u9ea6\u6a58\u5199\u5b9e",
+      "id": "civitai-43331",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 1153520,
+        "favorites": null,
+        "comments": 520,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 43331,
+        "civitai_url": "https://civitai.com/models/43331"
+      }
+    },
+    {
+      "rank": 3,
+      "name": "DreamShaper",
+      "id": "civitai-4384",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 1521981,
+        "favorites": null,
+        "comments": 475,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 4384,
+        "civitai_url": "https://civitai.com/models/4384"
+      }
+    },
+    {
+      "rank": 4,
+      "name": "Realistic Vision V6.0 B1",
+      "id": "civitai-4201",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 2036058,
+        "favorites": null,
+        "comments": 775,
+        "base_model": "SD 1.5 Hyper",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 4201,
+        "civitai_url": "https://civitai.com/models/4201"
+      }
+    },
+    {
+      "rank": 5,
+      "name": "Counterfeit-V3.0",
+      "id": "civitai-4468",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 445289,
+        "favorites": null,
+        "comments": 320,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 4468,
+        "civitai_url": "https://civitai.com/models/4468"
+      }
+    },
+    {
+      "rank": 6,
+      "name": "MeinaMix",
+      "id": "civitai-7240",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 500824,
+        "favorites": null,
+        "comments": 160,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 7240,
+        "civitai_url": "https://civitai.com/models/7240"
+      }
+    },
+    {
+      "rank": 7,
+      "name": "ReV Animated",
+      "id": "civitai-7371",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 562350,
+        "favorites": null,
+        "comments": 305,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 7371,
+        "civitai_url": "https://civitai.com/models/7371"
+      }
+    },
+    {
+      "rank": 8,
+      "name": "AutismMix SDXL",
+      "id": "civitai-288584",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 347299,
+        "favorites": null,
+        "comments": 542,
+        "base_model": "Pony",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 288584,
+        "civitai_url": "https://civitai.com/models/288584"
+      }
+    },
+    {
+      "rank": 9,
+      "name": "Juggernaut XL",
+      "id": "civitai-133005",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 1279629,
+        "favorites": null,
+        "comments": 864,
+        "base_model": "SDXL 1.0",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 133005,
+        "civitai_url": "https://civitai.com/models/133005"
+      }
+    },
+    {
+      "rank": 10,
+      "name": "Pony Realism \ud83d\udd2e",
+      "id": "civitai-372465",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 489864,
+        "favorites": null,
+        "comments": 626,
+        "base_model": "Pony",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 372465,
+        "civitai_url": "https://civitai.com/models/372465"
+      }
+    },
+    {
+      "rank": 11,
+      "name": "Cetus-Mix",
+      "id": "civitai-6755",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 287052,
+        "favorites": null,
+        "comments": 151,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 6755,
+        "civitai_url": "https://civitai.com/models/6755"
+      }
+    },
+    {
+      "rank": 12,
+      "name": "CyberRealistic Pony",
+      "id": "civitai-443821",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 599022,
+        "favorites": null,
+        "comments": 794,
+        "base_model": "Pony",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 443821,
+        "civitai_url": "https://civitai.com/models/443821"
+      }
+    },
+    {
+      "rank": 13,
+      "name": "epiCRealism",
+      "id": "civitai-25694",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 820486,
+        "favorites": null,
+        "comments": 328,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 25694,
+        "civitai_url": "https://civitai.com/models/25694"
+      }
+    },
+    {
+      "rank": 14,
+      "name": "Prefect Pony XL",
+      "id": "civitai-439889",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 234905,
+        "favorites": null,
+        "comments": 423,
+        "base_model": "Pony",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 439889,
+        "civitai_url": "https://civitai.com/models/439889"
+      }
+    },
+    {
+      "rank": 15,
+      "name": "\u4e07\u8c61\u7194\u7089 | Anything XL",
+      "id": "civitai-9409",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 462226,
+        "favorites": null,
+        "comments": 207,
+        "base_model": "SDXL 1.0",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 9409,
+        "civitai_url": "https://civitai.com/models/9409"
+      }
+    },
+    {
+      "rank": 16,
+      "name": "GhostMix",
+      "id": "civitai-36520",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 271285,
+        "favorites": null,
+        "comments": 144,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 36520,
+        "civitai_url": "https://civitai.com/models/36520"
+      }
+    },
+    {
+      "rank": 17,
+      "name": "XXMix_9realistic",
+      "id": "civitai-47274",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 253843,
+        "favorites": null,
+        "comments": 130,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 47274,
+        "civitai_url": "https://civitai.com/models/47274"
+      }
+    },
+    {
+      "rank": 18,
+      "name": "CyberRealistic",
+      "id": "civitai-15003",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 560673,
+        "favorites": null,
+        "comments": 259,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 15003,
+        "civitai_url": "https://civitai.com/models/15003"
+      }
+    },
+    {
+      "rank": 19,
+      "name": "Beautiful Realistic Asians",
+      "id": "civitai-25494",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 485466,
+        "favorites": null,
+        "comments": 134,
+        "base_model": "SD 1.5",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 25494,
+        "civitai_url": "https://civitai.com/models/25494"
+      }
+    },
+    {
+      "rank": 20,
+      "name": "FLUX",
+      "id": "civitai-618692",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 317048,
+        "favorites": null,
+        "comments": 727,
+        "base_model": "Flux.1 D",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 618692,
+        "civitai_url": "https://civitai.com/models/618692"
+      }
+    }
+  ]
+}
