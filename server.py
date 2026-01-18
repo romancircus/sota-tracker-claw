@@ -384,7 +384,7 @@ def _recent_releases_impl(days: int = 30, open_source_only: bool = True) -> str:
     result = [header + "\n"]
 
     for row in rows:
-        sota_badge = f" [SOTA #{row['rank']}]" if row["is_sota"] and row["rank"] else ""
+        sota_badge = f" [SOTA #{row['rank']}]" if row["is_sota"] and row["rank"] is not None else ""
         open_badge = "" if row["is_open_source"] else " [CLOSED]"
         result.append(f"- **{row['name']}** ({row['category']}) - {row['release_date']}{sota_badge}{open_badge}")
 

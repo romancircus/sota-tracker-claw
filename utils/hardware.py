@@ -74,8 +74,11 @@ def get_profile_with_defaults() -> dict:
         # Merge with defaults to ensure all keys exist
         result = DEFAULT_PROFILE.copy()
         result.update(profile)
-        if "preferences" in profile:
+        # Handle preferences - ensure it's a valid dict before unpacking
+        if "preferences" in profile and isinstance(profile["preferences"], dict):
             result["preferences"] = {**DEFAULT_PROFILE["preferences"], **profile["preferences"]}
+        else:
+            result["preferences"] = DEFAULT_PROFILE["preferences"].copy()
         return result
     return DEFAULT_PROFILE.copy()
 
@@ -100,14 +103,20 @@ def configure_profile(
     # Get existing profile or create new one
     existing = profiles.get("profiles", {}).get(profile_name, DEFAULT_PROFILE.copy())
 
-    # Update fields if provided
+    # Update fields if provided (with validation)
     if vram_gb is not None:
+        if not isinstance(vram_gb, int) or vram_gb <= 0:
+            raise ValueError(f"vram_gb must be a positive integer, got {vram_gb}")
         existing["vram_gb"] = vram_gb
     if gpu is not None:
-        existing["gpu"] = gpu
+        existing["gpu"] = str(gpu)
     if ram_gb is not None:
+        if not isinstance(ram_gb, int) or ram_gb <= 0:
+            raise ValueError(f"ram_gb must be a positive integer, got {ram_gb}")
         existing["ram_gb"] = ram_gb
     if cpu_threads is not None:
+        if not isinstance(cpu_threads, int) or cpu_threads <= 0:
+            raise ValueError(f"cpu_threads must be a positive integer, got {cpu_threads}")
         existing["cpu_threads"] = cpu_threads
 
     # Update preferences
@@ -154,18 +163,25 @@ def vram_fits(model_vram: Any, available_vram_gb: int) -> bool:
         # If no VRAM info, assume it fits (be permissive)
         return True
 
+    # Validate available_vram_gb parameter
+    if available_vram_gb is None or not isinstance(available_vram_gb, (int, float)):
+        return True  # Be permissive on invalid input
+
     required = parse_vram_string(str(model_vram))
     if required is None:
         return True
 
-    return required <= available_vram_gb
+    return required <= int(available_vram_gb)
 
 
 def get_available_vram(concurrent_usage_gb: int = 0) -> int:
     """Calculate available VRAM based on profile and concurrent usage."""
     profile = get_profile_with_defaults()
     total_vram = profile.get("vram_gb", 8)
-    available = total_vram - concurrent_usage_gb
+    # Ensure concurrent_usage_gb is valid
+    if concurrent_usage_gb is None or not isinstance(concurrent_usage_gb, (int, float)):
+        concurrent_usage_gb = 0
+    available = total_vram - int(concurrent_usage_gb)
     return max(0, available)
 
 

@@ -88,12 +88,11 @@ class CacheManager:
 
     def is_cache_fresh(self, category: str) -> bool:
         """Check if category was fetched today."""
-        db = self.get_db()
-        row = db.execute(
-            "SELECT last_fetched FROM cache_status WHERE category = ?",
-            (category,)
-        ).fetchone()
-        db.close()
+        with self.get_db_context() as db:
+            row = db.execute(
+                "SELECT last_fetched FROM cache_status WHERE category = ?",
+                (category,)
+            ).fetchone()
 
         if not row or not row["last_fetched"]:
             return False
@@ -215,78 +214,73 @@ class CacheManager:
         if not models:
             return 0
 
-        db = self.get_db()
         count = 0
+        with self.get_db_context() as db:
+            for model in models:
+                # Check if model exists
+                existing = db.execute(
+                    "SELECT id FROM models WHERE id = ?",
+                    (model["id"],)
+                ).fetchone()
 
-        for model in models:
-            # Check if model exists
-            existing = db.execute(
-                "SELECT id FROM models WHERE id = ?",
-                (model["id"],)
-            ).fetchone()
+                if existing:
+                    # Update existing model's metrics and rank
+                    db.execute("""
+                        UPDATE models
+                        SET sota_rank = ?, metrics = ?, last_updated = ?
+                        WHERE id = ?
+                    """, (
+                        model.get("sota_rank"),
+                        json.dumps(model.get("metrics", {})),
+                        datetime.now().isoformat(),
+                        model["id"]
+                    ))
+                else:
+                    # Insert new model
+                    db.execute("""
+                        INSERT INTO models (id, name, category, is_open_source, is_sota, sota_rank, metrics, last_updated, source)
+                        VALUES (?, ?, ?, ?, 1, ?, ?, ?, 'auto')
+                    """, (
+                        model["id"],
+                        model["name"],
+                        model.get("category", category),
+                        model.get("is_open_source", True),
+                        model.get("sota_rank"),
+                        json.dumps(model.get("metrics", {})),
+                        datetime.now().isoformat()
+                    ))
+                count += 1
 
-            if existing:
-                # Update existing model's metrics and rank
-                db.execute("""
-                    UPDATE models
-                    SET sota_rank = ?, metrics = ?, last_updated = ?
-                    WHERE id = ?
-                """, (
-                    model.get("sota_rank"),
-                    json.dumps(model.get("metrics", {})),
-                    datetime.now().isoformat(),
-                    model["id"]
-                ))
-            else:
-                # Insert new model
-                db.execute("""
-                    INSERT INTO models (id, name, category, is_open_source, is_sota, sota_rank, metrics, last_updated, source)
-                    VALUES (?, ?, ?, ?, 1, ?, ?, ?, 'auto')
-                """, (
-                    model["id"],
-                    model["name"],
-                    model.get("category", category),
-                    model.get("is_open_source", True),
-                    model.get("sota_rank"),
-                    json.dumps(model.get("metrics", {})),
-                    datetime.now().isoformat()
-                ))
-            count += 1
-
-        db.commit()
-        db.close()
+            db.commit()
         return count
 
     def _update_cache_status(self, category: str, source: str, success: bool, error: Optional[str]):
         """Update cache status for a category."""
-        db = self.get_db()
-        db.execute("""
-            INSERT OR REPLACE INTO cache_status (category, last_fetched, fetch_source, fetch_success, error_message)
-            VALUES (?, ?, ?, ?, ?)
-        """, (
-            category,
-            datetime.now().isoformat(),
-            source,
-            success,
-            error
-        ))
-        db.commit()
-        db.close()
+        with self.get_db_context() as db:
+            db.execute("""
+                INSERT OR REPLACE INTO cache_status (category, last_fetched, fetch_source, fetch_success, error_message)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                category,
+                datetime.now().isoformat(),
+                source,
+                success,
+                error
+            ))
+            db.commit()
 
     def get_cache_status(self) -> list[dict]:
         """Get cache status for all categories."""
-        db = self.get_db()
-        rows = db.execute("SELECT * FROM cache_status ORDER BY category").fetchall()
-        db.close()
-        return [dict(row) for row in rows]
+        with self.get_db_context() as db:
+            rows = db.execute("SELECT * FROM cache_status ORDER BY category").fetchall()
+            return [dict(row) for row in rows]
 
     def force_refresh(self, category: str) -> dict:
         """Force refresh a category regardless of cache status."""
         # Clear cache status first
-        db = self.get_db()
-        db.execute("DELETE FROM cache_status WHERE category = ?", (category,))
-        db.commit()
-        db.close()
+        with self.get_db_context() as db:
+            db.execute("DELETE FROM cache_status WHERE category = ?", (category,))
+            db.commit()
 
         # Now refresh
         return self.refresh_if_stale(category)
@@ -294,11 +288,15 @@ class CacheManager:
 
 # Singleton instance (created when server starts)
 _cache_manager: Optional[CacheManager] = None
+_cache_manager_lock = threading.Lock()
 
 
 def get_cache_manager(db_path: Path) -> CacheManager:
-    """Get or create cache manager singleton."""
+    """Get or create cache manager singleton (thread-safe)."""
     global _cache_manager
     if _cache_manager is None:
-        _cache_manager = CacheManager(db_path)
+        with _cache_manager_lock:
+            # Double-checked locking pattern
+            if _cache_manager is None:
+                _cache_manager = CacheManager(db_path)
     return _cache_manager
