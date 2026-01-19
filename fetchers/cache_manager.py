@@ -210,45 +210,29 @@ class CacheManager:
         return []
 
     def _update_models(self, category: str, models: list[dict]) -> int:
-        """Update models in database from fresh data."""
+        """Update models in database from fresh data using INSERT OR REPLACE."""
         if not models:
             return 0
 
         count = 0
+        now = datetime.now().isoformat()
         with self.get_db_context() as db:
             for model in models:
-                # Check if model exists
-                existing = db.execute(
-                    "SELECT id FROM models WHERE id = ?",
-                    (model["id"],)
-                ).fetchone()
-
-                if existing:
-                    # Update existing model's metrics and rank
-                    db.execute("""
-                        UPDATE models
-                        SET sota_rank = ?, metrics = ?, last_updated = ?
-                        WHERE id = ?
-                    """, (
-                        model.get("sota_rank"),
-                        json.dumps(model.get("metrics", {})),
-                        datetime.now().isoformat(),
-                        model["id"]
-                    ))
-                else:
-                    # Insert new model
-                    db.execute("""
-                        INSERT INTO models (id, name, category, is_open_source, is_sota, sota_rank, metrics, last_updated, source)
-                        VALUES (?, ?, ?, ?, 1, ?, ?, ?, 'auto')
-                    """, (
-                        model["id"],
-                        model["name"],
-                        model.get("category", category),
-                        model.get("is_open_source", True),
-                        model.get("sota_rank"),
-                        json.dumps(model.get("metrics", {})),
-                        datetime.now().isoformat()
-                    ))
+                # Use INSERT OR REPLACE to upsert in a single query
+                # This eliminates the N+1 query pattern (SELECT then INSERT/UPDATE)
+                db.execute("""
+                    INSERT OR REPLACE INTO models
+                    (id, name, category, is_open_source, is_sota, sota_rank, metrics, last_updated, source)
+                    VALUES (?, ?, ?, ?, 1, ?, ?, ?, 'auto')
+                """, (
+                    model["id"],
+                    model["name"],
+                    model.get("category", category),
+                    model.get("is_open_source", True),
+                    model.get("sota_rank"),
+                    json.dumps(model.get("metrics", {})),
+                    now
+                ))
                 count += 1
 
             db.commit()

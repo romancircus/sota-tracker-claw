@@ -10,10 +10,20 @@ FREE API with rate limits (~100s requests/hour).
 """
 
 import json
+import sys
 import urllib.request
 import urllib.error
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
+
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from constants import HTTP_TIMEOUT_SECONDS, DEFAULT_TRENDING_LIMIT
+from utils.models import normalize_model_id
+from utils.log import get_logger
+
+logger = get_logger("fetchers.huggingface")
 
 
 class HuggingFaceFetcher:
@@ -25,7 +35,7 @@ class HuggingFaceFetcher:
     # Alternative: Direct API for model info
     MODEL_API = "https://huggingface.co/api/models"
 
-    def __init__(self, timeout: int = 30):
+    def __init__(self, timeout: int = HTTP_TIMEOUT_SECONDS):
         self.timeout = timeout
 
     def fetch_llm_leaderboard(self) -> list[dict]:
@@ -44,13 +54,13 @@ class HuggingFaceFetcher:
                 data = json.loads(resp.read().decode())
                 return self._parse_leaderboard(data)
         except urllib.error.HTTPError as e:
-            print(f"HuggingFace leaderboard fetch failed: {e.code}")
+            logger.warning(f"HuggingFace leaderboard fetch failed: {e.code}")
             return []
         except Exception as e:
-            print(f"HuggingFace leaderboard error: {e}")
+            logger.warning(f"HuggingFace leaderboard error: {e}")
             return []
 
-    def fetch_trending_models(self, task: str = None, limit: int = 10) -> list[dict]:
+    def fetch_trending_models(self, task: str = None, limit: int = DEFAULT_TRENDING_LIMIT) -> list[dict]:
         """
         Fetch top models from HuggingFace Hub by downloads.
 
@@ -71,7 +81,7 @@ class HuggingFaceFetcher:
                 models = json.loads(resp.read().decode())
                 return self._parse_hub_models(models)
         except Exception as e:
-            print(f"HuggingFace trending error: {e}")
+            logger.warning(f"HuggingFace trending error: {e}")
             return []
 
     def fetch_model_info(self, model_id: str) -> Optional[dict]:
@@ -85,16 +95,17 @@ class HuggingFaceFetcher:
             with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                 return json.loads(resp.read().decode())
         except Exception as e:
-            print(f"HuggingFace model info error for {model_id}: {e}")
+            logger.warning(f"HuggingFace model info error for {model_id}: {e}")
             return None
 
     def _parse_leaderboard(self, data: list) -> list[dict]:
         """Parse Open LLM Leaderboard format into our model format."""
         models = []
         for entry in data[:20]:  # Top 20
+            name = entry.get("model_name", "")
             model = {
-                "id": entry.get("model_name", "").replace("/", "-").lower(),
-                "name": entry.get("model_name", ""),
+                "id": normalize_model_id(name),
+                "name": name,
                 "category": "llm_local",
                 "is_open_source": True,
                 "release_date": entry.get("submission_date", datetime.now().strftime("%Y-%m-%d")),
@@ -115,9 +126,10 @@ class HuggingFaceFetcher:
         """Parse HuggingFace Hub API response."""
         parsed = []
         for m in models:
+            name = m.get("id", "")
             parsed.append({
-                "id": m.get("id", "").replace("/", "-").lower(),
-                "name": m.get("id", ""),
+                "id": normalize_model_id(name),
+                "name": name,
                 "downloads": m.get("downloads", 0),
                 "likes": m.get("likes", 0),
                 "pipeline_tag": m.get("pipeline_tag"),

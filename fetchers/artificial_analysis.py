@@ -21,7 +21,21 @@ from html.parser import HTMLParser
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from constants import HTTP_TIMEOUT_SECONDS, MAX_ARENA_SIZE, MAX_CONTENT_SIZE_BYTES
 from utils.classification import is_open_source
+from utils.models import normalize_model_id, build_model_dict
+from utils.log import get_logger
+
+logger = get_logger("fetchers.artificial_analysis")
+
+
+# Pre-compiled regex patterns (ReDoS-safe bounded patterns)
+_TABLE_PATTERNS = [
+    re.compile(r'<td[^>]*>(\d+)</td>\s*<td[^>]*>([^<]+)</td>\s*<td[^>]*>(\d+\.?\d*)</td>'),
+    re.compile(r'"name":\s*"([^"]{1,100})"[^}]{0,200}"elo":\s*(\d+)'),
+    re.compile(r'"model":\s*"([^"]{1,100})"[^}]{0,200}"score":\s*(\d+\.?\d*)'),
+]
+_NEXT_DATA_PATTERN = re.compile(r'<script id="__NEXT_DATA__" type="application/json">([^<]+)</script>')
 
 
 class ArtificialAnalysisFetcher:
@@ -36,7 +50,7 @@ class ArtificialAnalysisFetcher:
         "tts": "/speech/arena",
     }
 
-    def __init__(self, timeout: int = 30):
+    def __init__(self, timeout: int = HTTP_TIMEOUT_SECONDS):
         self.timeout = timeout
 
     def fetch_category(self, category: str) -> list[dict]:
@@ -48,7 +62,7 @@ class ArtificialAnalysisFetcher:
         """
         endpoint = self.ENDPOINTS.get(category)
         if not endpoint:
-            print(f"Unknown category: {category}")
+            logger.warning(f"Unknown category: {category}")
             return []
 
         url = f"{self.BASE_URL}{endpoint}"
@@ -65,10 +79,10 @@ class ArtificialAnalysisFetcher:
                 html = resp.read().decode()
                 return self._parse_html(html, category)
         except urllib.error.HTTPError as e:
-            print(f"Artificial Analysis fetch failed ({category}): {e.code}")
+            logger.warning(f"Artificial Analysis fetch failed ({category}): {e.code}")
             return []
         except Exception as e:
-            print(f"Artificial Analysis error ({category}): {e}")
+            logger.warning(f"Artificial Analysis error ({category}): {e}")
             return []
 
     def _parse_html(self, html: str, category: str) -> list[dict]:
@@ -79,13 +93,13 @@ class ArtificialAnalysisFetcher:
         """
         models = []
 
-        # Limit content length to prevent ReDoS attacks (10MB max)
-        if len(html) > 10 * 1024 * 1024:
-            html = html[:10 * 1024 * 1024]
+        # Limit content length to prevent ReDoS attacks
+        if len(html) > MAX_CONTENT_SIZE_BYTES:
+            html = html[:MAX_CONTENT_SIZE_BYTES]
 
         # Try to find embedded JSON data (Next.js pattern)
-        # Use [^<]* instead of .*? to prevent catastrophic backtracking
-        json_match = re.search(r'<script id="__NEXT_DATA__" type="application/json">([^<]+)</script>', html)
+        # Use pre-compiled pattern with [^<]* to prevent catastrophic backtracking
+        json_match = _NEXT_DATA_PATTERN.search(html)
         if json_match:
             try:
                 next_data = json.loads(json_match.group(1))
@@ -110,12 +124,12 @@ class ArtificialAnalysisFetcher:
             leaderboard = props.get("leaderboard", props.get("models", props.get("data", [])))
 
             if isinstance(leaderboard, list):
-                for rank, entry in enumerate(leaderboard[:20], 1):
+                for rank, entry in enumerate(leaderboard[:MAX_ARENA_SIZE], 1):
                     model = self._entry_to_model(entry, category, rank)
                     if model:
                         models.append(model)
         except Exception as e:
-            print(f"Error parsing Next.js data: {e}")
+            logger.warning(f"Error parsing Next.js data: {e}")
 
         return models
 
@@ -123,35 +137,25 @@ class ArtificialAnalysisFetcher:
         """Fallback: Parse HTML table rows."""
         models = []
 
-        # Simple regex to find model names and scores
-        # Pattern varies by page, this is a best-effort fallback
-        # Using non-greedy bounded patterns to prevent ReDoS
-        patterns = [
-            r'<td[^>]*>(\d+)</td>\s*<td[^>]*>([^<]+)</td>\s*<td[^>]*>(\d+\.?\d*)</td>',
-            r'"name":\s*"([^"]{1,100})"[^}]{0,200}"elo":\s*(\d+)',
-            r'"model":\s*"([^"]{1,100})"[^}]{0,200}"score":\s*(\d+\.?\d*)',
-        ]
-
-        for pattern in patterns:
-            # Avoid DOTALL where possible to limit backtracking scope
-            matches = re.findall(pattern, html)
+        # Use pre-compiled patterns (ReDoS-safe bounded patterns)
+        for pattern in _TABLE_PATTERNS:
+            matches = pattern.findall(html)
             if matches:
-                for rank, match in enumerate(matches[:20], 1):
+                for rank, match in enumerate(matches[:MAX_ARENA_SIZE], 1):
                     if len(match) >= 2:
                         name = match[1] if len(match) == 3 else match[0]
                         score = match[2] if len(match) == 3 else match[1]
-                        models.append({
-                            "id": name.lower().replace(" ", "-").replace("/", "-"),
-                            "name": name,
-                            "category": self._map_category(category),
-                            "is_open_source": is_open_source(name),
-                            "sota_rank": rank,
-                            "metrics": {
+                        models.append(build_model_dict(
+                            name=name,
+                            rank=rank,
+                            category=self._map_category(category),
+                            is_open_source=is_open_source(name),
+                            metrics={
                                 "elo": float(score) if score else None,
                                 "notes": f"Artificial Analysis rank #{rank}",
                                 "source": "artificial_analysis"
                             }
-                        })
+                        ))
                 break
 
         return models
@@ -164,13 +168,12 @@ class ArtificialAnalysisFetcher:
 
         elo = entry.get("elo", entry.get("score", entry.get("rating")))
 
-        return {
-            "id": name.lower().replace(" ", "-").replace("/", "-"),
-            "name": name,
-            "category": self._map_category(category),
-            "is_open_source": entry.get("is_open_source", is_open_source(name)),
-            "sota_rank": rank,
-            "metrics": {
+        return build_model_dict(
+            name=name,
+            rank=rank,
+            category=self._map_category(category),
+            is_open_source=entry.get("is_open_source", is_open_source(name)),
+            metrics={
                 "elo": elo,
                 "notes": entry.get("description", f"Artificial Analysis #{rank}"),
                 "price_input": entry.get("price_input"),
@@ -178,7 +181,7 @@ class ArtificialAnalysisFetcher:
                 "speed": entry.get("speed"),
                 "source": "artificial_analysis"
             }
-        }
+        )
 
     def _map_category(self, aa_category: str) -> str:
         """Map Artificial Analysis category to our categories."""

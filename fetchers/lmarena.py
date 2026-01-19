@@ -16,7 +16,12 @@ from typing import Optional
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+from constants import HTTP_TIMEOUT_SECONDS, MAX_LEADERBOARD_SIZE
 from utils.classification import is_open_source
+from utils.models import normalize_model_id, build_model_dict
+from utils.log import get_logger
+
+logger = get_logger("fetchers.lmarena")
 
 
 class LMArenaFetcher:
@@ -28,7 +33,7 @@ class LMArenaFetcher:
     # Alternative: JSON endpoint (if available)
     JSON_URL = "https://raw.githubusercontent.com/lm-sys/FastChat/main/fastchat/serve/leaderboard/elo_results.json"
 
-    def __init__(self, timeout: int = 30):
+    def __init__(self, timeout: int = HTTP_TIMEOUT_SECONDS):
         self.timeout = timeout
 
     def fetch_elo_rankings(self) -> list[dict]:
@@ -56,7 +61,7 @@ class LMArenaFetcher:
                 data = json.loads(resp.read().decode())
                 return self._parse_json(data)
         except Exception as e:
-            print(f"LMArena JSON fetch failed: {e}")
+            logger.warning(f"LMArena JSON fetch failed: {e}")
             return []
 
     def _fetch_csv(self) -> list[dict]:
@@ -70,7 +75,7 @@ class LMArenaFetcher:
                 csv_text = resp.read().decode()
                 return self._parse_csv(csv_text)
         except Exception as e:
-            print(f"LMArena CSV fetch failed: {e}")
+            logger.warning(f"LMArena CSV fetch failed: {e}")
             return []
 
     def _parse_json(self, data: dict) -> list[dict]:
@@ -83,36 +88,34 @@ class LMArenaFetcher:
         if isinstance(elo_data, dict):
             # Format: {model_name: elo_score}
             sorted_models = sorted(elo_data.items(), key=lambda x: x[1], reverse=True)
-            for rank, (name, elo) in enumerate(sorted_models[:30], 1):
-                models.append({
-                    "id": name.lower().replace(" ", "-").replace("/", "-"),
-                    "name": name,
-                    "category": "llm_api",
-                    "is_open_source": is_open_source(name),
-                    "sota_rank": rank,
-                    "metrics": {
+            for rank, (name, elo) in enumerate(sorted_models[:MAX_LEADERBOARD_SIZE], 1):
+                models.append(build_model_dict(
+                    name=name,
+                    rank=rank,
+                    category="llm_api",
+                    is_open_source=is_open_source(name),
+                    metrics={
                         "elo": elo,
                         "notes": f"Chatbot Arena Elo: {elo}",
                         "source": "lmarena"
                     }
-                })
+                ))
         elif isinstance(elo_data, list):
             # Format: [{model: name, elo: score}, ...]
-            for rank, entry in enumerate(elo_data[:30], 1):
+            for rank, entry in enumerate(elo_data[:MAX_LEADERBOARD_SIZE], 1):
                 name = entry.get("model", entry.get("name", "unknown"))
                 elo = entry.get("elo", entry.get("rating", 0))
-                models.append({
-                    "id": name.lower().replace(" ", "-").replace("/", "-"),
-                    "name": name,
-                    "category": "llm_api",
-                    "is_open_source": is_open_source(name),
-                    "sota_rank": rank,
-                    "metrics": {
+                models.append(build_model_dict(
+                    name=name,
+                    rank=rank,
+                    category="llm_api",
+                    is_open_source=is_open_source(name),
+                    metrics={
                         "elo": elo,
                         "notes": f"Chatbot Arena Elo: {elo}",
                         "source": "lmarena"
                     }
-                })
+                ))
 
         return models
 
@@ -125,7 +128,7 @@ class LMArenaFetcher:
             return models
 
         # Skip header
-        for rank, line in enumerate(lines[1:31], 1):  # Top 30
+        for rank, line in enumerate(lines[1:MAX_LEADERBOARD_SIZE+1], 1):
             parts = line.split(",")
             if len(parts) >= 2:
                 name = parts[0].strip().strip('"')
@@ -134,18 +137,17 @@ class LMArenaFetcher:
                 except ValueError:
                     elo = 0
 
-                models.append({
-                    "id": name.lower().replace(" ", "-").replace("/", "-"),
-                    "name": name,
-                    "category": "llm_api",
-                    "is_open_source": is_open_source(name),
-                    "sota_rank": rank,
-                    "metrics": {
+                models.append(build_model_dict(
+                    name=name,
+                    rank=rank,
+                    category="llm_api",
+                    is_open_source=is_open_source(name),
+                    metrics={
                         "elo": elo,
                         "notes": f"Chatbot Arena Elo: {elo}",
                         "source": "lmarena"
                     }
-                })
+                ))
 
         return models
 

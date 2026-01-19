@@ -13,8 +13,6 @@ Usage:
 import argparse
 import json
 import csv
-import sqlite3
-from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 
@@ -22,31 +20,11 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from constants import DB_PATH, DATA_DIR
+from utils.models import normalize_model_id
+from utils.db import get_db_context
 from scrapers.lmarena import LMArenaScraper
 from scrapers.artificial_analysis import ArtificialAnalysisScraper
-
-
-PROJECT_DIR = Path(__file__).parent.parent
-DATA_DIR = PROJECT_DIR / "data"
-DB_PATH = DATA_DIR / "sota.db"
-
-
-def get_db():
-    """Get database connection. Caller must close."""
-    db = sqlite3.connect(str(DB_PATH))
-    db.row_factory = sqlite3.Row
-    return db
-
-
-@contextmanager
-def get_db_context():
-    """Get database connection as context manager (auto-closes)."""
-    db = sqlite3.connect(str(DB_PATH))
-    db.row_factory = sqlite3.Row
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def update_models_from_scrape(scraped_data: dict, source: str):
@@ -70,7 +48,7 @@ def update_models_from_scrape(scraped_data: dict, source: str):
                 print(f"  Warning: Skipping model without name field")
                 continue
 
-            model_id = model["name"].lower().replace(" ", "-").replace("/", "-").replace(".", "-")
+            model_id = normalize_model_id(model["name"])
 
             # Check if model exists
             existing = db.execute(

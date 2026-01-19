@@ -13,12 +13,14 @@ Usage:
 import argparse
 import json
 import sqlite3
+import sys
 from datetime import datetime
 from pathlib import Path
 
-PROJECT_DIR = Path(__file__).parent.parent
-DATA_DIR = PROJECT_DIR / "data"
-DB_PATH = DATA_DIR / "sota.db"
+# Add parent to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from constants import DB_PATH
+from utils.db import get_db_context
 
 # Migration definitions: (version, name, up_sql, down_sql)
 MIGRATIONS = [
@@ -54,13 +56,6 @@ MIGRATIONS = [
         ALTER TABLE models ADD COLUMN swebench_score REAL;
     """, "SELECT 1;"),
 ]
-
-
-def get_db() -> sqlite3.Connection:
-    """Get database connection."""
-    db = sqlite3.connect(str(DB_PATH))
-    db.row_factory = sqlite3.Row
-    return db
 
 
 def ensure_version_table(db: sqlite3.Connection):
@@ -120,21 +115,20 @@ def migrate():
         print("Run 'python init_db.py' first to create the database.")
         return False
 
-    db = get_db()
-    ensure_version_table(db)
+    with get_db_context(DB_PATH) as db:
+        ensure_version_table(db)
 
-    pending = get_pending_migrations(db)
-    if not pending:
-        print("Database is up to date.")
-        return True
+        pending = get_pending_migrations(db)
+        if not pending:
+            print("Database is up to date.")
+            return True
 
-    print(f"Applying {len(pending)} migration(s)...")
+        print(f"Applying {len(pending)} migration(s)...")
 
-    for version, name, up_sql, _ in pending:
-        apply_migration(db, version, name, up_sql)
+        for version, name, up_sql, _ in pending:
+            apply_migration(db, version, name, up_sql)
 
-    print(f"Done. Database is now at version {get_current_version(db)}.")
-    db.close()
+        print(f"Done. Database is now at version {get_current_version(db)}.")
     return True
 
 
@@ -144,36 +138,34 @@ def status():
         print("Database not found.")
         return
 
-    db = get_db()
-    ensure_version_table(db)
+    with get_db_context(DB_PATH) as db:
+        ensure_version_table(db)
 
-    current = get_current_version(db)
-    pending = get_pending_migrations(db)
+        current = get_current_version(db)
+        pending = get_pending_migrations(db)
 
-    print(f"Current version: {current}")
-    print(f"Latest version:  {MIGRATIONS[-1][0]}")
-    print()
+        print(f"Current version: {current}")
+        print(f"Latest version:  {MIGRATIONS[-1][0]}")
+        print()
 
-    # Show applied migrations
-    applied = db.execute(
-        "SELECT version, name, applied_at FROM schema_version ORDER BY version"
-    ).fetchall()
+        # Show applied migrations
+        applied = db.execute(
+            "SELECT version, name, applied_at FROM schema_version ORDER BY version"
+        ).fetchall()
 
-    if applied:
-        print("Applied migrations:")
-        for row in applied:
-            print(f"  v{row['version']}: {row['name']} ({row['applied_at']})")
-    else:
-        print("No migrations applied yet.")
+        if applied:
+            print("Applied migrations:")
+            for row in applied:
+                print(f"  v{row['version']}: {row['name']} ({row['applied_at']})")
+        else:
+            print("No migrations applied yet.")
 
-    if pending:
-        print(f"\nPending migrations ({len(pending)}):")
-        for version, name, _, _ in pending:
-            print(f"  v{version}: {name}")
-    else:
-        print("\nNo pending migrations.")
-
-    db.close()
+        if pending:
+            print(f"\nPending migrations ({len(pending)}):")
+            for version, name, _, _ in pending:
+                print(f"  v{version}: {name}")
+        else:
+            print("\nNo pending migrations.")
 
 
 def reset():
