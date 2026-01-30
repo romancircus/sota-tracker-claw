@@ -188,7 +188,15 @@ def seed_sota_models(db: sqlite3.Connection):
                 "why_sota": "Unmatched photorealistic humans, skin texture, and facial detail",
                 "strengths": ["Portrait quality", "Skin realism", "Human anatomy", "Natural lighting"],
                 "use_cases": ["Portrait photography", "Fashion", "Character art", "Realistic humans"],
-                "vram": "40GB+"
+                "vram": "40GB+",
+                "constraints": {
+                    "cfg": {"min": 3.0, "max": 5.0, "default": 3.5},
+                    "steps": {"min": 35, "max": 60, "default": 50},
+                    "sampler": "euler",
+                    "scheduler": "simple",
+                    "shift": {"min": 7.0, "max": 13.0, "default": 7.0, "note": "CRITICAL: shift=3.1 causes blurry output. Use 7.0 for sharp, 12-13 for max sharpness"},
+                    "resolution": {"native": [1296, 1296], "divisible_by": 8}
+                }
             }
         },
 
