@@ -72,7 +72,7 @@ description: Ensures Claude recommends current SOTA AI models. Use when discussi
 Before suggesting ANY AI model, you MUST:
 
 1. **Check SOTA first**: Call `query_sota(category)` to get current SOTA models
-   - Categories: `image_gen`, `image_edit`, `video`, `llm_local`, `llm_api`, `llm_coding`, `tts`, `stt`, `music`, `3d`, `embeddings`
+   - Categories: `image_gen`, `image_edit`, `video`, `video2audio`, `llm_local`, `llm_api`, `llm_coding`, `tts`, `stt`, `music`, `3d`, `embeddings`
 
 2. **Verify freshness**: Call `check_freshness(model_name)` before suggesting any specific model
 

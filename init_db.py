@@ -86,6 +86,7 @@ def seed_categories(db: sqlite3.Connection):
         ("tts", "Text-to-Speech", "Voice synthesis and cloning", True),
         ("stt", "Speech-to-Text", "Audio transcription", True),
         ("music", "Music Generation", "AI music creation", True),
+        ("video2audio", "Video-to-Audio", "Generate synchronized audio from video (foley, SFX)", True),
         ("3d", "3D Generation", "3D model and scene generation", True),
         ("embeddings", "Embeddings", "Vector embedding models", True),
     ]
@@ -915,6 +916,24 @@ def seed_sota_models(db: sqlite3.Connection):
                 "use_cases": ["Multilingual projects", "Voice cloning", "Localization", "International content"]
             }
         },
+        {
+            "id": "qwen3-tts",
+            "name": "Qwen3-TTS (Alibaba)",
+            "category": "tts",
+            "release_date": "2026-01-15",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 3,
+            "download_url": "https://github.com/QwenLM/Qwen3-TTS",
+            "metrics": {
+                "notes": "#3 open-source TTS, 10 languages, voice design from text description, 3s rapid clone",
+                "why_sota": "Newest SOTA with voice design capability - create voices from text descriptions",
+                "strengths": ["Voice design", "10 languages", "3s voice cloning", "Cross-lingual", "Fine-tuning support"],
+                "use_cases": ["Custom voice creation", "Character voices", "Multilingual content", "Voice cloning"],
+                "vram": "4-6GB"
+            }
+        },
 
         # =====================================================================
         # STT (Speech-to-Text)
@@ -1074,13 +1093,122 @@ def seed_sota_models(db: sqlite3.Connection):
             "release_date": "2024-08-01",
             "is_sota": True,
             "is_open_source": True,
-            "sota_rank": 5,
-            "sota_rank_open": 3,
+            "sota_rank": 6,
+            "sota_rank_open": 4,
             "metrics": {
-                "notes": "#3 open-source music, melody-conditioned generation, AudioCraft family",
+                "notes": "#4 open-source music, melody-conditioned generation, AudioCraft family",
                 "why_sota": "Best for transforming existing melodies into full arrangements",
                 "strengths": ["Melody transformation", "Style transfer", "Arrangement", "Open-source"],
                 "use_cases": ["Cover versions", "Style transfer", "Arrangement assistance", "Music education"]
+            }
+        },
+        {
+            "id": "yue-7b-icl",
+            "name": "YuE (M-A-P/HKUST)",
+            "category": "music",
+            "release_date": "2025-01-28",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 1,
+            "download_url": "https://github.com/multimodal-art-projection/YuE",
+            "metrics": {
+                "notes": "#1 open-source lyrics-to-song, 7B params, full song generation with vocals, on par with Suno",
+                "why_sota": "First open-source lyrics-to-song model matching commercial quality, ICL for style cloning",
+                "strengths": ["Full song generation", "Lyrics-to-song", "Style cloning via ICL", "Multi-language", "Apache 2.0"],
+                "use_cases": ["Cover songs", "Original music", "Style transfer", "Remixes", "Music production"],
+                "vram": "24GB+",
+                "models": {
+                    "stage1_cot": "m-a-p/YuE-s1-7B-anneal-en-cot",
+                    "stage1_icl": "m-a-p/YuE-s1-7B-anneal-en-icl",
+                    "stage2": "m-a-p/YuE-s2-1B-general"
+                },
+                "icl_notes": "Use -icl model with --use_audio_prompt for style cloning from reference audio"
+            }
+        },
+
+        # =====================================================================
+        # VOICE CONVERSION (under TTS umbrella)
+        # =====================================================================
+        {
+            "id": "seed-vc",
+            "name": "Seed-VC",
+            "category": "tts",
+            "release_date": "2025-06-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 6,
+            "sota_rank_open": 5,
+            "download_url": "https://github.com/Plachtaa/seed-vc",
+            "metrics": {
+                "notes": "SOTA zero-shot voice conversion, dedicated singing voice mode, outperforms RVC in speaker similarity",
+                "why_sota": "Best zero-shot voice conversion, singing mode preserves pitch/melody, RTX 5090 compatible",
+                "strengths": ["Zero-shot", "Singing voice mode", "400ms latency", "No training needed", "RTX 50-series compatible"],
+                "use_cases": ["Voice conversion", "Singing voice conversion", "Cover songs", "Character voices", "Voice cloning"],
+                "vram": "8-10GB",
+                "vs_rvc": "Outperforms RVC in speaker similarity (SECS) and intelligibility (CER) despite being zero-shot"
+            }
+        },
+
+        # =====================================================================
+        # VIDEO-TO-AUDIO (Foley, SFX, Synchronized Audio from Video)
+        # =====================================================================
+        {
+            "id": "mmaudio-v2-large",
+            "name": "MMAudio V2 Large (Sony AI)",
+            "category": "video2audio",
+            "release_date": "2025-10-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 1,
+            "sota_rank_open": 1,
+            "download_url": "https://github.com/hkchengrex/MMAudio",
+            "metrics": {
+                "notes": "#1 video-to-audio, 580M params, generates synchronized foley/SFX from video, ~2GB VRAM",
+                "why_sota": "Best temporal alignment with video, handles video conditioning directly, lightweight",
+                "strengths": ["Temporal sync", "Low VRAM", "Video conditioning", "Foley/SFX quality", "Fast inference"],
+                "use_cases": ["Adding sound to silent videos", "Creature foley", "Nature sounds", "Action SFX", "Game audio"],
+                "vram": "2GB",
+                "parameters": {
+                    "steps": {"min": 10, "max": 50, "default": 25},
+                    "cfg": {"min": 1.0, "max": 10.0, "default": 4.5},
+                    "sample_rate": 44100
+                },
+                "negative_prompt": "music, speech, narration, human voice, singing"
+            }
+        },
+        {
+            "id": "mmaudio-v1",
+            "name": "MMAudio V1 (Sony AI)",
+            "category": "video2audio",
+            "release_date": "2025-05-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 2,
+            "sota_rank_open": 2,
+            "download_url": "https://github.com/hkchengrex/MMAudio",
+            "metrics": {
+                "notes": "#2 video-to-audio, 150M params, predecessor to V2, still viable for lighter workloads",
+                "why_sota": "Smaller model, faster inference, good for prototyping",
+                "strengths": ["Very lightweight", "Fast", "Low memory", "Easy to run"],
+                "use_cases": ["Quick prototyping", "Batch processing", "Resource-constrained environments"],
+                "vram": "<1GB"
+            }
+        },
+        {
+            "id": "foleycrafter",
+            "name": "FoleyCrafter",
+            "category": "video2audio",
+            "release_date": "2024-06-01",
+            "is_sota": True,
+            "is_open_source": True,
+            "sota_rank": 3,
+            "sota_rank_open": 3,
+            "metrics": {
+                "notes": "#3 video-to-audio, audio adapter approach, good for specific sound effects",
+                "why_sota": "Decent quality but less precise temporal alignment than MMAudio",
+                "strengths": ["Open-source", "Good for specific SFX"],
+                "use_cases": ["Simple foley", "Sound effects", "Basic audio addition"]
             }
         },
 

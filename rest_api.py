@@ -87,7 +87,7 @@ def list_models(
     """
     Get SOTA models for a category.
 
-    Categories: image_gen, image_edit, video, llm_local, llm_api, llm_coding, tts, stt, music, 3d, embeddings
+    Categories: image_gen, image_edit, video, video2audio, llm_local, llm_api, llm_coding, tts, stt, music, 3d, embeddings
     """
     result = _query_sota_impl(category, open_source_only)
     if "Invalid category" in result:

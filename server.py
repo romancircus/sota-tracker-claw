@@ -84,7 +84,7 @@ mcp = FastMCP(
     - cost_sensitive: Prefer free/cheap options
 
     Categories:
-    - image_gen, image_edit, video
+    - image_gen, image_edit, video, video2audio (foley/SFX from video)
     - llm_local (general local LLMs), llm_api (cloud APIs), llm_coding (code-focused)
     - tts, stt, music, 3d, embeddings
 
@@ -119,7 +119,7 @@ def _query_sota_impl(category: str, open_source_only: bool = True) -> str:
     """Implementation of query_sota."""
 
     valid_categories = [
-        "image_gen", "image_edit", "video", "llm_local", "llm_api", "llm_coding",
+        "image_gen", "image_edit", "video", "video2audio", "llm_local", "llm_api", "llm_coding",
         "tts", "stt", "music", "3d", "embeddings"
     ]
 
@@ -439,7 +439,7 @@ def _query_sota_for_hardware_impl(
 ) -> str:
     """Implementation of query_sota_for_hardware."""
     valid_categories = [
-        "image_gen", "image_edit", "video", "llm_local", "llm_api", "llm_coding",
+        "image_gen", "image_edit", "video", "video2audio", "llm_local", "llm_api", "llm_coding",
         "tts", "stt", "music", "3d", "embeddings"
     ]
 
@@ -664,7 +664,7 @@ def query_sota(category: str, open_source_only: bool = True) -> str:
     DEFAULTS TO OPEN-SOURCE ONLY. Set open_source_only=False to see closed-source models too.
 
     Args:
-        category: One of: image_gen, image_edit, video, llm_local, llm_api, llm_coding,
+        category: One of: image_gen, image_edit, video, video2audio, llm_local, llm_api, llm_coding,
                   tts, stt, music, 3d, embeddings
         open_source_only: If True (default), only show open-source models.
                           If False, show all models including closed-source.
@@ -912,6 +912,126 @@ def get_model_recommendation(
         task=task,
         concurrent_workload=concurrent_workload
     )
+
+
+# ============================================================================
+# BEST IN CLASS TOOL
+# ============================================================================
+
+@mcp.tool()
+def get_best_in_class(category: str = "llm_local") -> str:
+    """
+    Get the #1 model in each subcategory for easier decision-making.
+
+    Instead of one ranked list mixing all model types, this shows
+    the BEST model for each use case.
+
+    For llm_local, shows:
+    - Best overall (general use)
+    - Best small (fits alongside image/video gen)
+    - Best reasoning (math, logic, chain-of-thought)
+    - Best uncensored (no restrictions)
+    - Best uncensored small (no restrictions + concurrent use)
+    - Best uncensored reasoning
+
+    Args:
+        category: Model category (default: llm_local)
+
+    Returns:
+        #1 model for each subcategory with VRAM requirements.
+    """
+    if category != "llm_local":
+        return f"Best-in-class subcategories only implemented for llm_local. Use query_sota('{category}') instead."
+
+    profile = get_profile_with_defaults()
+    total_vram = profile.get("vram_gb", 32)
+    prefs = profile.get("preferences", {})
+    uncensored_pref = prefs.get("uncensored", False)
+
+    with get_db_context() as db:
+        rows = db.execute("""
+            SELECT name, sota_rank_open as rank, metrics
+            FROM models
+            WHERE category = 'llm_local' AND is_sota = 1 AND is_open_source = 1
+            ORDER BY sota_rank_open ASC
+        """).fetchall()
+
+    if not rows:
+        return "No models found."
+
+    # Categorize models
+    best = {
+        "overall": None,
+        "small": None,  # <=8GB VRAM
+        "reasoning": None,
+        "uncensored": None,
+        "uncensored_small": None,
+        "uncensored_reasoning": None,
+    }
+
+    for row in rows:
+        try:
+            metrics = json.loads(row["metrics"]) if row["metrics"] else {}
+        except:
+            metrics = {}
+
+        vram = metrics.get("vram_gb", 20)
+        is_uncensored = metrics.get("is_uncensored", False)
+        is_reasoning = "reasoning" in row["name"].lower() or "qwq" in row["name"].lower() or "r1" in row["name"].lower()
+        is_small = vram <= 8
+
+        # Best overall
+        if not best["overall"]:
+            best["overall"] = (row["name"], vram, row["rank"])
+
+        # Best small
+        if is_small and not best["small"]:
+            best["small"] = (row["name"], vram, row["rank"])
+
+        # Best reasoning
+        if is_reasoning and not best["reasoning"]:
+            best["reasoning"] = (row["name"], vram, row["rank"])
+
+        # Best uncensored
+        if is_uncensored and not best["uncensored"]:
+            best["uncensored"] = (row["name"], vram, row["rank"])
+
+        # Best uncensored small
+        if is_uncensored and is_small and not best["uncensored_small"]:
+            best["uncensored_small"] = (row["name"], vram, row["rank"])
+
+        # Best uncensored reasoning
+        if is_uncensored and is_reasoning and not best["uncensored_reasoning"]:
+            best["uncensored_reasoning"] = (row["name"], vram, row["rank"])
+
+    result = [f"## Best-in-Class for LLM_LOCAL"]
+    result.append(f"**Your VRAM:** {total_vram}GB")
+    if uncensored_pref:
+        result.append("**Preference:** Uncensored models\n")
+    result.append("")
+
+    labels = {
+        "overall": "Best Overall",
+        "small": "Best Small (concurrent use)",
+        "reasoning": "Best Reasoning",
+        "uncensored": "Best Uncensored",
+        "uncensored_small": "Best Uncensored + Small",
+        "uncensored_reasoning": "Best Uncensored + Reasoning",
+    }
+
+    for key, label in labels.items():
+        if best[key]:
+            name, vram, rank = best[key]
+            fits = "✅" if vram <= total_vram else "❌"
+            result.append(f"**{label}:** {name} ({vram}GB) {fits}")
+            result.append(f"   Overall rank: #{rank} (but #1 in this subcategory)")
+        else:
+            result.append(f"**{label}:** None found")
+
+    result.append("")
+    result.append("*Subcategory #1 matters more than overall rank for your use case.*")
+
+    return "\n".join(result)
 
 
 # ============================================================================
