@@ -18,6 +18,7 @@ from pathlib import Path
 
 # Add parent to path for imports
 import sys
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # Define paths directly (avoid missing constants.py)
@@ -49,15 +50,14 @@ def update_models_from_scrape(scraped_data: dict, source: str):
         for model in models:
             # Validate required field
             if "name" not in model:
-                print(f"  Warning: Skipping model without name field")
+                print("  Warning: Skipping model without name field")
                 continue
 
             model_id = normalize_model_id(model["name"])
 
             # Check if model exists
             existing = db.execute(
-                "SELECT id, source FROM models WHERE id = ?",
-                (model_id,)
+                "SELECT id, source FROM models WHERE id = ?", (model_id,)
             ).fetchone()
 
             if existing:
@@ -84,44 +84,63 @@ def update_models_from_scrape(scraped_data: dict, source: str):
                     existing_metrics["scraped_at"] = scraped_data.get("scraped_at")
                     # Preserve any new fields from scraper that don't exist
                     for key in ["rating", "downloads", "base_model"]:
-                        if key in model.get("metrics", {}) and key not in existing_metrics:
+                        if (
+                            key in model.get("metrics", {})
+                            and key not in existing_metrics
+                        ):
                             existing_metrics[key] = model["metrics"][key]
 
-                    db.execute("""
+                    db.execute(
+                        """
                         UPDATE models
                         SET sota_rank = ?,
                             metrics = ?,
                             last_updated = ?,
                             source = ?
                         WHERE id = ?
-                    """, (
-                        model.get("rank"),  # Use the actual scraped rank
-                        json.dumps(existing_metrics),
-                        datetime.now().isoformat(),
-                        source,
-                        model_id
-                    ))
+                    """,
+                        (
+                            model.get("rank"),  # Use the actual scraped rank
+                            json.dumps(existing_metrics),
+                            datetime.now().isoformat(),
+                            source,
+                            model_id,
+                        ),
+                    )
                     updated += 1
             else:
                 # Insert new model
-                db.execute("""
+                # Civitai models are popular but not SOTA - only mark as SOTA if has benchmark data
+                is_sota = 0 if source == "civitai" else 1
+                db.execute(
+                    """
                     INSERT INTO models (id, name, category, is_open_source, is_sota, sota_rank, metrics, last_updated, source)
-                    VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)
-                """, (
-                    model_id,
-                    model["name"],
-                    model.get("category", "llm_api"),
-                    model.get("is_open_source", True),
-                    model.get("rank"),
-                    json.dumps({
-                        "elo": model.get("elo"),
-                        "notes": f"Auto-scraped from {source}",
-                        "scraped_from": source,
-                        "scraped_at": scraped_data.get("scraped_at")
-                    }),
-                    datetime.now().isoformat(),
-                    source
-                ))
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                    (
+                        model_id,
+                        model["name"],
+                        model.get("category", "llm_api"),
+                        model.get("is_open_source", True),
+                        is_sota,
+                        model.get("rank"),
+                        json.dumps(
+                            {
+                                "elo": model.get("elo"),
+                                "notes": f"Auto-scraped from {source}"
+                                + (
+                                    " (Popular, not SOTA)"
+                                    if source == "civitai"
+                                    else ""
+                                ),
+                                "scraped_from": source,
+                                "scraped_at": scraped_data.get("scraped_at"),
+                            }
+                        ),
+                        datetime.now().isoformat(),
+                        source,
+                    ),
+                )
                 inserted += 1
 
         db.commit()
@@ -133,16 +152,13 @@ def update_models_from_scrape(scraped_data: dict, source: str):
 def update_cache_status(category: str, source: str, success: bool, error: str = None):
     """Update cache status table."""
     with get_db_context(DB_PATH) as db:
-        db.execute("""
+        db.execute(
+            """
             INSERT OR REPLACE INTO cache_status (category, last_fetched, fetch_source, fetch_success, error_message)
             VALUES (?, ?, ?, ?, ?)
-        """, (
-            category,
-            datetime.now().isoformat(),
-            source,
-            success,
-            error
-        ))
+        """,
+            (category, datetime.now().isoformat(), source, success, error),
+        )
         db.commit()
 
 
@@ -150,16 +166,18 @@ def export_to_json():
     """Export all SOTA data to JSON."""
     with get_db_context(DB_PATH) as db:
         # Export all models
-        rows = db.execute("""
+        rows = db.execute(
+            """
             SELECT * FROM models WHERE is_sota = 1 ORDER BY category, sota_rank
-        """).fetchall()
+        """
+        ).fetchall()
 
         models = [dict(row) for row in rows]
 
     output = {
         "exported_at": datetime.now().isoformat(),
         "model_count": len(models),
-        "models": models
+        "models": models,
     }
 
     output_path = DATA_DIR / "sota_export.json"
@@ -173,16 +191,29 @@ def export_to_json():
 def export_to_csv():
     """Export all SOTA data to CSV."""
     with get_db_context(DB_PATH) as db:
-        rows = db.execute("""
+        rows = db.execute(
+            """
             SELECT id, name, category, is_open_source, sota_rank, release_date, source, last_updated
             FROM models WHERE is_sota = 1 ORDER BY category, sota_rank
-        """).fetchall()
+        """
+        ).fetchall()
 
     output_path = DATA_DIR / "sota_export.csv"
 
     with open(output_path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["id", "name", "category", "is_open_source", "sota_rank", "release_date", "source", "last_updated"])
+        writer.writerow(
+            [
+                "id",
+                "name",
+                "category",
+                "is_open_source",
+                "sota_rank",
+                "release_date",
+                "source",
+                "last_updated",
+            ]
+        )
         for row in rows:
             writer.writerow(list(row))
 
@@ -233,6 +264,7 @@ def run_all_scrapers(export: bool = False):
     print("3. Fetching HuggingFace data...")
     try:
         from fetchers.huggingface import HuggingFaceFetcher
+
         hf = HuggingFaceFetcher()
 
         # Open LLM Leaderboard
@@ -241,7 +273,7 @@ def run_all_scrapers(export: bool = False):
             result = {
                 "models": result_llm,
                 "model_count": len(result_llm),
-                "scraped_at": datetime.now().isoformat()
+                "scraped_at": datetime.now().isoformat(),
             }
             update_models_from_scrape(result, "huggingface")
             update_cache_status("llm_local", "huggingface", True)
@@ -253,7 +285,11 @@ def run_all_scrapers(export: bool = False):
         if result_embed:
             for m in result_embed:
                 m["category"] = "embeddings"
-            result = {"models": result_embed, "model_count": len(result_embed), "scraped_at": datetime.now().isoformat()}
+            result = {
+                "models": result_embed,
+                "model_count": len(result_embed),
+                "scraped_at": datetime.now().isoformat(),
+            }
             update_models_from_scrape(result, "huggingface")
             results["hf_embed"] = result
             print(f"   SUCCESS: {len(result_embed)} embeddings fetched\n")
@@ -266,6 +302,7 @@ def run_all_scrapers(export: bool = False):
     print("4. Fetching Civitai image models...")
     try:
         from scrapers.civitai import CivitaiScraper
+
         civitai = CivitaiScraper()
         result = civitai.scrape(model_type="Checkpoint", limit=20)
         results["civitai"] = result
@@ -300,7 +337,9 @@ def run_all_scrapers(export: bool = False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run SOTA data scrapers")
-    parser.add_argument("--export", action="store_true", help="Export to JSON/CSV after scraping")
+    parser.add_argument(
+        "--export", action="store_true", help="Export to JSON/CSV after scraping"
+    )
     args = parser.parse_args()
 
     run_all_scrapers(export=args.export)
