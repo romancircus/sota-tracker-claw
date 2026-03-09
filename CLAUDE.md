@@ -164,3 +164,21 @@ git checkout --theirs data/sota.db
 | File | Why |
 |------|-----|
 | `data/hardware_profiles.json` | User-specific (GPU specs differ per machine) |
+
+---
+
+## Mandatory Plan-to-Linear Protocol
+
+For non-trivial work, this sequence is required:
+
+1. Create or update a plan file at `docs/plans/<slug>-<YYYY-MM-DD>.md`.
+2. Break work into executable steps.
+3. Create one Linear issue per executable step.
+4. Link the plan path in each Linear issue.
+5. Keep plan + Linear in sync as execution progresses.
+6. Never ask the user to do manual Linear operations.
+
+Linear outage fallback:
+- If Linear is down/rate-limited, queue changes and continue execution:
+  - `python3 scripts/linear_outbox_append.py ...`
+  - `python3 scripts/linear_flush_outbox.py --backend auto`
