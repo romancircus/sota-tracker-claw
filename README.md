@@ -270,3 +270,7 @@ This project:
 MIT - See [LICENSE](LICENSE) for details.
 
 The **code** in this repository is MIT licensed. The **data** belongs to its respective sources (see attribution above).
+
+## Download History
+
+[![Download History](https://skill-history.com/chart/romancircus/sota-tracker-mcp.svg)](https://skill-history.com/romancircus/sota-tracker-mcp)
