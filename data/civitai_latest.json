@@ -1,7 +1,7 @@
 {
   "source": "civitai",
   "url": "https://civitai.com/api/v1/models?limit=20&sort=Highest%20Rated&types=Checkpoint&nsfw=false",
-  "scraped_at": "2026-04-24T07:47:37.262177",
+  "scraped_at": "2026-04-25T07:01:25.333554",
   "model_count": 20,
   "model_type": "Checkpoint",
   "models": [
