@@ -4,13 +4,13 @@ tripo-2,Tripo 2.0,3d,0,2,2025-09-01,manual,2026-02-03 13:49:32
 instantmesh,InstantMesh,3d,1,3,2025-06-01,manual,2026-02-03 13:49:32
 triposr,TripoSR (Stability AI),3d,1,4,2024-03-01,manual,2026-02-03 13:49:32
 openlrm,OpenLRM,3d,1,5,2024-01-01,manual,2026-02-03 13:49:32
-jinaai-jina-embeddings-v3,jinaai/jina-embeddings-v3,embeddings,1,,,huggingface,2026-06-14T09:00:12.991394
-baai-bge-large-en-v1-5,BAAI/bge-large-en-v1.5,embeddings,1,,,huggingface,2026-06-14T09:00:12.991240
-baai-bge-small-en-v1-5,BAAI/bge-small-en-v1.5,embeddings,1,,,huggingface,2026-06-14T09:00:12.991179
-baai-bge-base-en-v1-5,BAAI/bge-base-en-v1.5,embeddings,1,,,huggingface,2026-06-14T09:00:12.991292
-intfloat-multilingual-e5-large,intfloat/multilingual-e5-large,embeddings,1,,,huggingface,2026-06-14T09:00:12.991312
-facebook-w2v-bert-2-0,facebook/w2v-bert-2.0,embeddings,1,,,huggingface,2026-06-14T09:00:12.991355
-qwen-qwen3-embedding-0-6b,Qwen/Qwen3-Embedding-0.6B,embeddings,1,,,huggingface,2026-06-14T09:00:12.991270
+jinaai-jina-embeddings-v3,jinaai/jina-embeddings-v3,embeddings,1,,,huggingface,2026-06-15T11:42:24.129643
+baai-bge-large-en-v1-5,BAAI/bge-large-en-v1.5,embeddings,1,,,huggingface,2026-06-15T11:42:24.129516
+baai-bge-small-en-v1-5,BAAI/bge-small-en-v1.5,embeddings,1,,,huggingface,2026-06-15T11:42:24.129456
+baai-bge-base-en-v1-5,BAAI/bge-base-en-v1.5,embeddings,1,,,huggingface,2026-06-15T11:42:24.129561
+intfloat-multilingual-e5-large,intfloat/multilingual-e5-large,embeddings,1,,,huggingface,2026-06-15T11:42:24.129578
+facebook-w2v-bert-2-0,facebook/w2v-bert-2.0,embeddings,1,,,huggingface,2026-06-15T11:42:24.129611
+qwen-qwen3-embedding-0-6b,Qwen/Qwen3-Embedding-0.6B,embeddings,1,,,huggingface,2026-06-15T11:42:24.129542
 qwen-qwen3-embedding-8b,Qwen/Qwen3-Embedding-8B,embeddings,1,,,huggingface,2026-04-23T07:21:22.316133
 opensearch-project-opensearch-neural-sparse-encoding-doc-v2-distill,opensearch-project/opensearch-neural-sparse-encoding-doc-v2-distill,embeddings,1,,,huggingface,2026-03-14T06:34:03.738303
 microsoft-wavlm-base-plus,microsoft/wavlm-base-plus,embeddings,1,,,huggingface,2026-02-24T06:46:42.591120
@@ -18,10 +18,10 @@ whereisai-uae-large-v1,WhereIsAI/UAE-Large-V1,embeddings,1,,,huggingface,2026-03
 xenova-paraphrase-multilingual-minilm-l12-v2,Xenova/paraphrase-multilingual-MiniLM-L12-v2,embeddings,1,,,huggingface,2026-03-21T06:30:31.318216
 facebook-bart-base,facebook/bart-base,embeddings,1,,,huggingface,2026-03-13T06:38:40.623265
 supabase-gte-small,Supabase/gte-small,embeddings,1,,,huggingface,2026-04-09T07:09:43.988773
-mixedbread-ai-mxbai-embed-large-v1,mixedbread-ai/mxbai-embed-large-v1,embeddings,1,,,huggingface,2026-06-14T09:00:12.991335
+mixedbread-ai-mxbai-embed-large-v1,mixedbread-ai/mxbai-embed-large-v1,embeddings,1,,,huggingface,2026-06-15T11:42:24.129596
 qwen-qwen3-embedding-4b,Qwen/Qwen3-Embedding-4B,embeddings,1,,,huggingface,2026-04-19T07:06:26.203830
-baai-bge-small-zh-v1-5,BAAI/bge-small-zh-v1.5,embeddings,1,,,huggingface,2026-06-14T09:00:12.991375
-xenova-all-minilm-l6-v2,Xenova/all-MiniLM-L6-v2,embeddings,1,,,huggingface,2026-06-14T09:00:12.991415
+baai-bge-small-zh-v1-5,BAAI/bge-small-zh-v1.5,embeddings,1,,,huggingface,2026-06-15T11:42:24.129628
+xenova-all-minilm-l6-v2,Xenova/all-MiniLM-L6-v2,embeddings,1,,,huggingface,2026-06-15T11:42:24.129660
 xenova-multilingual-e5-small,Xenova/multilingual-e5-small,embeddings,1,,,huggingface,2026-05-25T09:45:44.908070
 bge-m3,BGE-M3 (BAAI),embeddings,1,1,2024-06-01,manual,2026-02-03 13:49:32
 gte-qwen2-7b,GTE-Qwen2-7B (Alibaba),embeddings,1,2,2025-01-01,manual,2026-02-03 13:49:32
@@ -34,111 +34,111 @@ instructpix2pix,InstructPix2Pix,image_edit,1,3,2023-08-01,manual,2026-02-03 13:4
 adobe-firefly-edit,Adobe Firefly (Edit),image_edit,0,4,2025-03-01,manual,2026-02-03 13:49:32
 ideogram-edit,Ideogram Edit,image_edit,0,5,2025-01-01,manual,2026-02-03 13:49:32
 gpt-image-1.5,GPT Image 1.5,image_gen,0,1,2025-12-16,manual,2026-02-03 13:49:32
-pony-diffusion-v6-xl,Pony Diffusion V6 XL,image_gen,1,1,,civitai,2026-06-14T09:00:13.236000
+pony-diffusion-v6-xl,Pony Diffusion V6 XL,image_gen,1,1,,civitai,2026-06-15T11:42:24.498539
 wai-illustrious-sdxl,WAI-illustrious-SDXL,image_gen,1,1,,civitai,2026-04-23T07:21:22.564012
 gemini-3-pro-image,Gemini 3 Pro Image,image_gen,0,2,2025-12-01,manual,2026-02-03 13:49:32
-majicmix-realistic-麦橘写实,majicMIX realistic 麦橘写实,image_gen,1,2,,civitai,2026-06-14T09:00:13.236069
+majicmix-realistic-麦橘写实,majicMIX realistic 麦橘写实,image_gen,1,2,,civitai,2026-06-15T11:42:24.498606
 z-image-turbo,Z-Image-Turbo,image_gen,1,3,2025-11-26,manual,2026-02-03 13:49:32
-dreamshaper,DreamShaper,image_gen,1,3,,civitai,2026-06-14T09:00:13.236100
+dreamshaper,DreamShaper,image_gen,1,3,,civitai,2026-06-15T11:42:24.498634
 flux2-dev,FLUX.2-dev,image_gen,1,4,2025-11-25,manual,2026-02-03 13:49:32
-realistic-vision-v6-0-b1,Realistic Vision V6.0 B1,image_gen,1,4,,civitai,2026-06-14T09:00:13.236123
+realistic-vision-v6-0-b1,Realistic Vision V6.0 B1,image_gen,1,4,,civitai,2026-06-15T11:42:24.498653
 qwen-image-2512,"Qwen Image (Alibaba, Dec 2025)",image_gen,1,5,2025-12-31,manual,2026-02-03 13:49:32
-counterfeit-v3-0,Counterfeit-V3.0,image_gen,1,5,,civitai,2026-06-14T09:00:13.236144
-meinamix,MeinaMix,image_gen,1,6,,civitai,2026-06-14T09:00:13.236164
-rev-animated,ReV Animated,image_gen,1,7,,civitai,2026-06-14T09:00:13.236183
-autismmix-sdxl,AutismMix SDXL,image_gen,1,8,,civitai,2026-06-14T09:00:13.236202
-juggernaut-xl,Juggernaut XL,image_gen,1,9,,civitai,2026-06-14T09:00:13.236221
-pony-realism-🔮,Pony Realism 🔮,image_gen,1,10,,civitai,2026-06-14T09:00:13.236241
-cyberrealistic-pony,CyberRealistic Pony,image_gen,1,11,,civitai,2026-06-14T09:00:13.236264
-cetus-mix,Cetus-Mix,image_gen,1,12,,civitai,2026-06-14T09:00:13.236283
-prefect-pony-xl,Prefect Pony XL,image_gen,1,13,,civitai,2026-06-14T09:00:13.236302
-epicrealism,epiCRealism,image_gen,1,14,,civitai,2026-06-14T09:00:13.236320
-万象熔炉-|-anything-xl,万象熔炉 | Anything XL,image_gen,1,15,,civitai,2026-06-14T09:00:13.236341
-ghostmix,GhostMix,image_gen,1,16,,civitai,2026-06-14T09:00:13.236360
-cyberrealistic,CyberRealistic,image_gen,1,17,,civitai,2026-06-14T09:00:13.236378
-xxmix_9realistic,XXMix_9realistic,image_gen,1,18,,civitai,2026-06-14T09:00:13.236396
-flux,FLUX,image_gen,1,19,,civitai,2026-06-14T09:00:13.236414
-beautiful-realistic-asians,Beautiful Realistic Asians,image_gen,1,20,,civitai,2026-06-14T09:00:13.236433
+counterfeit-v3-0,Counterfeit-V3.0,image_gen,1,5,,civitai,2026-06-15T11:42:24.498670
+meinamix,MeinaMix,image_gen,1,6,,civitai,2026-06-15T11:42:24.498687
+rev-animated,ReV Animated,image_gen,1,7,,civitai,2026-06-15T11:42:24.498704
+autismmix-sdxl,AutismMix SDXL,image_gen,1,8,,civitai,2026-06-15T11:42:24.498720
+juggernaut-xl,Juggernaut XL,image_gen,1,9,,civitai,2026-06-15T11:42:24.498736
+pony-realism-🔮,Pony Realism 🔮,image_gen,1,10,,civitai,2026-06-15T11:42:24.498754
+cyberrealistic-pony,CyberRealistic Pony,image_gen,1,11,,civitai,2026-06-15T11:42:24.498773
+cetus-mix,Cetus-Mix,image_gen,1,12,,civitai,2026-06-15T11:42:24.498809
+prefect-pony-xl,Prefect Pony XL,image_gen,1,13,,civitai,2026-06-15T11:42:24.498827
+epicrealism,epiCRealism,image_gen,1,14,,civitai,2026-06-15T11:42:24.498843
+万象熔炉-|-anything-xl,万象熔炉 | Anything XL,image_gen,1,15,,civitai,2026-06-15T11:42:24.498861
+ghostmix,GhostMix,image_gen,1,16,,civitai,2026-06-15T11:42:24.498877
+cyberrealistic,CyberRealistic,image_gen,1,17,,civitai,2026-06-15T11:42:24.498892
+xxmix_9realistic,XXMix_9realistic,image_gen,1,18,,civitai,2026-06-15T11:42:24.498907
+flux,FLUX,image_gen,1,19,,civitai,2026-06-15T11:42:24.498923
+beautiful-realistic-asians,Beautiful Realistic Asians,image_gen,1,20,,civitai,2026-06-15T11:42:24.498939
 claude-opus-4.5,Claude Opus 4.5,llm_api,0,1,2025-11-01,manual,2026-02-03 13:49:32
 chatgpt-image-latest-high-fidelity-(20251216),chatgpt-image-latest-high-fidelity (20251216),llm_api,0,1,,lmarena,2026-03-03T06:37:27.645297
 claude-opus-4-6-(adaptive),Claude Opus 4.6 (Adaptive),llm_api,0,1,,artificial_analysis,2026-02-17T06:44:59.393624
 claude-opus-4-6-thinking,claude-opus-4-6-thinking,llm_api,0,1,,lmarena,2026-05-28T09:42:33.308522
 gpt-image-2-(medium),gpt-image-2 (medium),llm_api,0,1,,lmarena,2026-05-28T09:42:33.308741
-claude-fable-5-(with-fallback),Claude Fable 5 (with fallback),llm_api,0,1,,artificial_analysis,2026-06-14T09:00:12.791285
+claude-fable-5-(with-fallback),Claude Fable 5 (with fallback),llm_api,0,1,,artificial_analysis,2026-06-15T11:42:23.877076
 gpt-4.5,GPT-4.5,llm_api,0,2,2025-10-01,manual,2026-02-03 13:49:32
 gemini-3-1-flash-image-preview-(nano-banana-2)-[web-search],gemini-3.1-flash-image-preview (nano-banana-2) [web-search],llm_api,0,2,,lmarena,2026-05-28T09:42:33.308759
-28,28,llm_api,1,2,,lmarena,2026-06-14T09:00:05.455064
-31,31,llm_api,1,2,,lmarena,2026-06-14T09:00:05.455142
-39,39,llm_api,1,2,,lmarena,2026-06-14T09:00:05.455352
-44,44,llm_api,1,2,,lmarena,2026-06-14T09:00:05.455484
-47,47,llm_api,1,2,,lmarena,2026-06-14T09:00:05.455561
-claude-opus-4-8-(max),Claude Opus 4.8 (max),llm_api,0,2,,artificial_analysis,2026-06-14T09:00:12.791352
+28,28,llm_api,1,2,,lmarena,2026-06-15T11:42:15.882691
+31,31,llm_api,1,2,,lmarena,2026-06-15T11:42:15.882735
+39,39,llm_api,1,2,,lmarena,2026-06-15T11:42:15.882944
+44,44,llm_api,1,2,,lmarena,2026-06-15T11:42:15.883023
+47,47,llm_api,1,2,,lmarena,2026-06-15T11:42:15.883066
+claude-opus-4-8-(max),Claude Opus 4.8 (max),llm_api,0,2,,artificial_analysis,2026-06-15T11:42:23.877141
 gemini-2.0-pro,Gemini 2.0 Pro,llm_api,0,3,2025-12-01,manual,2026-02-03 13:49:32
 claude-opus-4-7,claude-opus-4-7,llm_api,0,3,,lmarena,2026-05-28T09:42:33.308591
-gpt-5-5-(xhigh),GPT-5.5 (xhigh),llm_api,0,3,,artificial_analysis,2026-06-14T09:00:12.791383
-7,7,llm_api,1,3,,lmarena,2026-06-14T09:00:05.454440
-8,8,llm_api,1,3,,lmarena,2026-06-14T09:00:05.454476
-13,13,llm_api,1,3,,lmarena,2026-06-14T09:00:05.454616
-16,16,llm_api,1,3,,lmarena,2026-06-14T09:00:05.454696
-20,20,llm_api,1,3,,lmarena,2026-06-14T09:00:05.454846
-30,30,llm_api,1,3,,lmarena,2026-06-14T09:00:05.455116
-32,32,llm_api,1,3,,lmarena,2026-06-14T09:00:05.455170
-33,33,llm_api,1,3,,lmarena,2026-06-14T09:00:05.455196
-42,42,llm_api,1,3,,lmarena,2026-06-14T09:00:05.455429
+gpt-5-5-(xhigh),GPT-5.5 (xhigh),llm_api,0,3,,artificial_analysis,2026-06-15T11:42:23.877169
+7,7,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882366
+8,8,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882381
+13,13,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882463
+16,16,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882508
+20,20,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882567
+30,30,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882720
+32,32,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882753
+33,33,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882768
+42,42,llm_api,1,3,,lmarena,2026-06-15T11:42:15.882991
 mai-image-2-5-preview,mai-image-2.5-preview,llm_api,1,3,,lmarena,2026-05-28T09:42:33.308778
 grok-4.1,Grok 4.1 (xAI),llm_api,0,4,2025-11-01,manual,2026-02-03 13:49:32
 gemini-3-pro-image-preview-2k-(nano-banana-pro),gemini-3-pro-image-preview-2k (nano-banana-pro),llm_api,0,4,,lmarena,2026-05-28T09:42:33.308799
 claude-opus-4-7-thinking,claude-opus-4-7-thinking,llm_api,0,4,,lmarena,2026-05-28T09:42:33.308630
-gpt-5-5-(high),GPT-5.5 (high),llm_api,0,4,,artificial_analysis,2026-06-14T09:00:12.791407
-2,2,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454293
-3,3,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454328
-4,4,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454358
-5,5,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454386
-9,9,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454503
-12,12,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454590
-17,17,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454762
-19,19,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454820
-21,21,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454873
-22,22,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454901
-24,24,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454952
-25,25,llm_api,1,4,,lmarena,2026-06-14T09:00:05.454984
-29,29,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455090
-34,34,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455222
-36,36,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455274
-37,37,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455300
-38,38,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455325
-40,40,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455377
-43,43,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455457
-46,46,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455535
-50,50,llm_api,1,4,,lmarena,2026-06-14T09:00:05.455639
+gpt-5-5-(high),GPT-5.5 (high),llm_api,0,4,,artificial_analysis,2026-06-15T11:42:23.877190
+2,2,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882270
+3,3,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882293
+4,4,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882312
+5,5,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882329
+9,9,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882397
+12,12,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882448
+17,17,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882523
+19,19,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882552
+21,21,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882583
+22,22,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882599
+24,24,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882631
+25,25,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882646
+29,29,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882705
+34,34,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882783
+36,36,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882899
+37,37,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882914
+38,38,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882929
+40,40,llm_api,1,4,,lmarena,2026-06-15T11:42:15.882959
+43,43,llm_api,1,4,,lmarena,2026-06-15T11:42:15.883007
+46,46,llm_api,1,4,,lmarena,2026-06-15T11:42:15.883052
+50,50,llm_api,1,4,,lmarena,2026-06-15T11:42:15.883110
 qwen3-7-max-20260517,qwen3.7-max-20260517,llm_api,1,4,,lmarena,2026-05-28T09:42:33.308307
 deepseek-v3-api,DeepSeek V3 API (DeepSeek),llm_api,1,5,2025-12-25,manual,2026-02-03 13:49:32
 gpt-image-1-5-high-fidelity,gpt-image-1.5-high-fidelity,llm_api,0,5,,lmarena,2026-05-28T09:42:33.308817
 gpt-5-4-(xhigh),GPT-5.4 (xhigh),llm_api,0,5,,artificial_analysis,2026-05-01T08:00:05.572333
-claude-opus-4-7-(max),Claude Opus 4.7 (max),llm_api,0,5,,artificial_analysis,2026-06-14T09:00:12.791431
+claude-opus-4-7-(max),Claude Opus 4.7 (max),llm_api,0,5,,artificial_analysis,2026-06-15T11:42:23.877210
 gpt-5-5-high,gpt-5.5-high,llm_api,0,5,,lmarena,2026-05-28T09:42:33.308652
-1,1,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454207
-10,10,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454531
-11,11,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454562
-14,14,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454643
-15,15,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454670
-18,18,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454792
-23,23,llm_api,1,5,,lmarena,2026-06-14T09:00:05.454927
-26,26,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455010
-27,27,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455037
-35,35,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455248
-41,41,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455403
-45,45,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455510
-48,48,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455587
-49,49,llm_api,1,5,,lmarena,2026-06-14T09:00:05.455612
+1,1,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882203
+10,10,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882413
+11,11,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882432
+14,14,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882479
+15,15,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882493
+18,18,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882538
+23,23,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882613
+26,26,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882661
+27,27,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882676
+35,35,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882882
+41,41,llm_api,1,5,,lmarena,2026-06-15T11:42:15.882975
+45,45,llm_api,1,5,,lmarena,2026-06-15T11:42:15.883037
+48,48,llm_api,1,5,,lmarena,2026-06-15T11:42:15.883081
+49,49,llm_api,1,5,,lmarena,2026-06-15T11:42:15.883095
 mistral-large-api,Mistral Large API (Mistral),llm_api,1,6,2025-09-01,manual,2026-02-03 13:49:32
 gemini-3-pro,gemini-3-pro,llm_api,0,6,,lmarena,2026-05-28T09:42:33.308427
 gemini-3-pro-image-preview-(nano-banana-pro),gemini-3-pro-image-preview (nano-banana-pro),llm_api,0,6,,lmarena,2026-05-28T09:42:33.308835
-6,6,llm_api,1,6,,lmarena,2026-06-14T09:00:05.454414
+6,6,llm_api,1,6,,lmarena,2026-06-15T11:42:15.882346
 llama-3.3-together,Llama 3.3-70B via Together.ai,llm_api,1,7,2025-12-01,manual,2026-02-03 13:49:32
 gpt-5-2-(xhigh),GPT-5.2 (xhigh),llm_api,0,7,,artificial_analysis,2026-04-08T07:06:40.646289
 claude-opus-4-6-(max),Claude Opus 4.6 (max),llm_api,0,7,,artificial_analysis,2026-04-23T07:21:22.065367
-gpt-5-5-(medium),GPT-5.5 (medium),llm_api,0,7,,artificial_analysis,2026-06-14T09:00:12.791465
+gpt-5-5-(medium),GPT-5.5 (medium),llm_api,0,7,,artificial_analysis,2026-06-15T11:42:23.877235
 gpt-5-5,gpt-5.5,llm_api,0,7,,lmarena,2026-05-28T09:42:33.308677
 grok-imagine-image-quality,grok-imagine-image-quality,llm_api,0,7,,lmarena,2026-05-28T09:42:33.308852
 kimi-k2-5-thinking,kimi-k2.5-thinking,llm_api,1,8,,lmarena,2026-04-19T07:06:20.861484
@@ -149,7 +149,7 @@ grok-imagine-image-(20260207),grok-imagine-image (20260207),llm_api,0,8,,lmarena
 gpt-5-4,gpt-5.4,llm_api,0,8,,lmarena,2026-05-28T09:42:33.308695
 claude-opus-4-7-(high),Claude Opus 4.7 (high),llm_api,0,8,,artificial_analysis,2026-04-22T07:19:02.764547
 uni-1-1-max,uni-1.1-max,llm_api,1,8,,lmarena,2026-05-28T09:42:33.308870
-qwen3-7-max,Qwen3.7 Max,llm_api,1,8,,artificial_analysis,2026-06-14T09:00:12.791490
+qwen3-7-max,Qwen3.7 Max,llm_api,1,8,,artificial_analysis,2026-06-15T11:42:23.877254
 grok-4-1-thinking,grok-4.1-thinking,llm_api,0,9,,lmarena,2026-03-16T07:04:18.269324
 claude-opus-4-5-20251101-thinking-32k,claude-opus-4-5-20251101-thinking-32k,llm_api,0,9,,lmarena,2026-05-14T08:26:21.102942
 claude-opus-4-5-20251101,claude-opus-4-5-20251101,llm_api,0,9,,lmarena,2026-05-28T09:42:33.308718
@@ -201,49 +201,49 @@ uni-1-1,uni-1.1,llm_api,1,10,,lmarena,2026-05-28T09:42:33.308908
 gpt-5-5-instant,gpt-5.5-instant,llm_api,0,10,,lmarena,2026-05-18T09:37:08.938733
 gpt-5-5-xhigh-(codex-harness),gpt-5.5-xhigh (codex-harness),llm_api,0,10,,lmarena,2026-05-25T09:45:39.223589
 gemini-3-5-flash,gemini-3.5-flash,llm_api,0,10,,lmarena,2026-05-28T09:42:33.308348
-gemini-3-5-flash-(medium),Gemini 3.5 Flash (medium),llm_api,0,10,,artificial_analysis,2026-06-14T09:00:12.791515
-minimax-m3,MiniMax-M3,llm_api,1,11,,artificial_analysis,2026-06-14T09:00:12.791534
+gemini-3-5-flash-(medium),Gemini 3.5 Flash (medium),llm_api,0,10,,artificial_analysis,2026-06-15T11:42:23.877283
+minimax-m3,MiniMax-M3,llm_api,1,11,,artificial_analysis,2026-06-15T11:42:23.877301
 gpt-5-2-codex-(xhigh),GPT-5.2 Codex (xhigh),llm_api,0,12,,artificial_analysis,2026-04-08T07:06:40.646382
 qwen3-6-max-preview,Qwen3.6 Max Preview,llm_api,1,12,,artificial_analysis,2026-05-19T08:56:32.024010
-kimi-k2-6,Kimi K2.6,llm_api,1,12,,artificial_analysis,2026-06-14T09:00:12.791553
+kimi-k2-6,Kimi K2.6,llm_api,1,12,,artificial_analysis,2026-06-15T11:42:23.877317
 grok-4-20-beta-0309,Grok 4.20 Beta 0309,llm_api,0,13,,artificial_analysis,2026-04-08T07:06:40.646488
-mimo-v2-5-pro,MiMo-V2.5-Pro,llm_api,1,13,,artificial_analysis,2026-06-14T09:00:12.791571
+mimo-v2-5-pro,MiMo-V2.5-Pro,llm_api,1,13,,artificial_analysis,2026-06-15T11:42:23.877333
 gemini-3-pro-preview-(high),Gemini 3 Pro Preview (high),llm_api,0,14,,artificial_analysis,2026-04-08T07:06:40.646526
-gpt-5-3-codex-(xhigh),GPT-5.3 Codex (xhigh),llm_api,0,14,,artificial_analysis,2026-06-14T09:00:12.791592
-qwen3-7-plus,Qwen3.7 Plus,llm_api,1,15,,artificial_analysis,2026-06-14T09:00:12.791611
+gpt-5-3-codex-(xhigh),GPT-5.3 Codex (xhigh),llm_api,0,14,,artificial_analysis,2026-06-15T11:42:23.877351
+qwen3-7-plus,Qwen3.7 Plus,llm_api,1,15,,artificial_analysis,2026-06-15T11:42:23.877366
 gpt-5-1-(high),GPT-5.1 (high),llm_api,0,16,,artificial_analysis,2026-04-08T07:06:40.646567
-grok-4-3-(high),Grok 4.3 (high),llm_api,0,16,,artificial_analysis,2026-06-14T09:00:12.791629
-muse-spark,Muse Spark,llm_api,1,17,,artificial_analysis,2026-06-14T09:00:12.791647
+grok-4-3-(high),Grok 4.3 (high),llm_api,0,16,,artificial_analysis,2026-06-15T11:42:23.877381
+muse-spark,Muse Spark,llm_api,1,17,,artificial_analysis,2026-06-15T11:42:23.877396
 kimi-k2-thinking,Kimi K2 Thinking,llm_api,1,18,,artificial_analysis,2026-02-10T06:54:05.780984
 kat-coder-pro-v2,KAT-Coder-Pro V2,llm_api,1,18,,artificial_analysis,2026-03-31T07:01:39.795755
-"claude-opus-4-7-(non-reasoning,-high)","Claude Opus 4.7 (Non-reasoning, high)",llm_api,0,18,,artificial_analysis,2026-06-14T09:00:12.791666
+"claude-opus-4-7-(non-reasoning,-high)","Claude Opus 4.7 (Non-reasoning, high)",llm_api,0,18,,artificial_analysis,2026-06-15T11:42:23.877413
 kimi-k2-5,Kimi K2.5,llm_api,1,19,,artificial_analysis,2026-04-23T07:21:22.065588
 gpt-5-2-(medium),GPT-5.2 (medium),llm_api,0,19,,artificial_analysis,2026-04-08T07:06:40.646626
 claude-opus-4-6,Claude Opus 4.6,llm_api,0,19,,artificial_analysis,2026-04-21T07:20:52.600439
-claude-sonnet-4-6-(max),Claude Sonnet 4.6 (max),llm_api,0,19,,artificial_analysis,2026-06-14T09:00:12.791685
+claude-sonnet-4-6-(max),Claude Sonnet 4.6 (max),llm_api,0,19,,artificial_analysis,2026-06-15T11:42:23.877429
 glm-5,GLM-5,llm_api,1,20,,artificial_analysis,2026-05-25T09:45:44.609186
 minimax-m2-5,MiniMax-M2.5,llm_api,1,20,,artificial_analysis,2026-03-19T06:44:31.293714
-deepseek-v4-pro-(max),DeepSeek V4 Pro (Max),llm_api,1,20,,artificial_analysis,2026-06-14T09:00:12.791740
+deepseek-v4-pro-(max),DeepSeek V4 Pro (Max),llm_api,1,20,,artificial_analysis,2026-06-15T11:42:23.877446
 mimo-v2-pro,MiMo-V2-Pro,llm_api,1,21,,artificial_analysis,2026-05-04T08:14:51.197848
-glm-5-1,GLM-5.1,llm_api,1,21,,artificial_analysis,2026-06-14T09:00:12.791769
+glm-5-1,GLM-5.1,llm_api,1,21,,artificial_analysis,2026-06-15T11:42:23.877462
 grok-4-20-0309-v2,Grok 4.20 0309 v2,llm_api,0,21,,artificial_analysis,2026-04-30T08:01:50.870387
 claude-opus-4-6-(high),Claude Opus 4.6 (high),llm_api,0,21,,artificial_analysis,2026-04-23T07:21:22.065623
-gpt-5-5-(low),GPT-5.5 (low),llm_api,0,22,,artificial_analysis,2026-06-14T09:00:12.791791
+gpt-5-5-(low),GPT-5.5 (low),llm_api,0,22,,artificial_analysis,2026-06-15T11:42:23.877478
 grok-4,Grok 4,llm_api,0,23,,artificial_analysis,2026-03-19T06:44:31.293767
 claude-sonnet-4-6,Claude Sonnet 4.6,llm_api,0,23,,artificial_analysis,2026-04-21T07:20:52.600503
-qwen3-6-plus,Qwen3.6 Plus,llm_api,1,23,,artificial_analysis,2026-06-14T09:00:12.791810
+qwen3-6-plus,Qwen3.6 Plus,llm_api,1,23,,artificial_analysis,2026-06-15T11:42:23.877494
 gpt-5-(high),GPT-5 (high),llm_api,0,24,,artificial_analysis,2026-04-08T07:06:40.646712
-deepseek-v4-pro-(high),DeepSeek V4 Pro (High),llm_api,1,24,,artificial_analysis,2026-06-14T09:00:12.791833
+deepseek-v4-pro-(high),DeepSeek V4 Pro (High),llm_api,1,24,,artificial_analysis,2026-06-15T11:42:23.877508
 gpt-5-codex-(high),GPT-5 Codex (high),llm_api,0,25,,artificial_analysis,2026-04-08T07:06:40.646732
 gpt-5-4-(low),GPT-5.4 (low),llm_api,0,25,,artificial_analysis,2026-05-25T09:45:44.609265
 gpt-5-mini-(high),GPT-5 mini (high),llm_api,0,26,,artificial_analysis,2026-03-19T06:44:31.293825
-mimo-v2-5,MiMo-V2.5,llm_api,1,26,,artificial_analysis,2026-06-14T09:00:12.791859
-gpt-5-4-mini-(xhigh),GPT-5.4 mini (xhigh),llm_api,0,27,,artificial_analysis,2026-06-14T09:00:12.791877
+mimo-v2-5,MiMo-V2.5,llm_api,1,26,,artificial_analysis,2026-06-15T11:42:23.877529
+gpt-5-4-mini-(xhigh),GPT-5.4 mini (xhigh),llm_api,0,27,,artificial_analysis,2026-06-15T11:42:23.877544
 qwen3-max-thinking,Qwen3 Max Thinking,llm_api,1,28,,artificial_analysis,2026-03-31T07:01:39.795980
 minimax-m2-1,MiniMax-M2.1,llm_api,1,28,,artificial_analysis,2026-02-20T06:41:29.147361
 doubao-seed-2-0-lite,Doubao Seed 2.0 lite,llm_api,1,28,,artificial_analysis,2026-02-25T06:50:22.060417
 qwen3-6-35b-a3b,Qwen3.6 35B A3B,llm_api,1,28,,artificial_analysis,2026-04-23T07:21:22.065735
-grok-4-3-(medium),Grok 4.3 (medium),llm_api,0,28,,artificial_analysis,2026-06-14T09:00:12.791896
+grok-4-3-(medium),Grok 4.3 (medium),llm_api,0,28,,artificial_analysis,2026-06-15T11:42:23.877563
 claude-4-5-sonnet,Claude 4.5 Sonnet,llm_api,0,29,,artificial_analysis,2026-04-07T07:03:24.756744
 gpt-5-1-codex-(high),GPT-5.1 Codex (high),llm_api,0,29,,artificial_analysis,2026-04-08T07:06:40.646803
 o3,o3,llm_api,1,29,,artificial_analysis,2026-03-31T07:01:39.795997
@@ -252,7 +252,7 @@ claude-4-5-haiku,Claude 4.5 Haiku,llm_api,0,29,,artificial_analysis,2026-02-26T0
 kat-coder-pro-v1,KAT-Coder-Pro V1,llm_api,1,29,,artificial_analysis,2026-02-25T06:50:22.060439
 mimo-v2-flash-(feb-2026),MiMo-V2-Flash (Feb 2026),llm_api,1,29,,artificial_analysis,2026-04-17T07:17:57.738477
 mimo-v2-omni,mimo-v2-omni,llm_api,1,29,,artificial_analysis,2026-04-23T07:21:22.065753
-nemotron-3-ultra,Nemotron 3 Ultra,llm_api,1,29,,artificial_analysis,2026-06-14T09:00:12.791914
+nemotron-3-ultra,Nemotron 3 Ultra,llm_api,1,29,,artificial_analysis,2026-06-15T11:42:23.877579
 claude-opus-4-5,Claude Opus 4.5,llm_api,0,30,,artificial_analysis,2026-04-08T07:06:40.646821
 deepseek-v3-2,DeepSeek V3.2,llm_api,1,30,,artificial_analysis,2026-04-20T07:49:47.245259
 gemini-3-pro-preview-(low),Gemini 3 Pro Preview (low),llm_api,0,30,,artificial_analysis,2026-04-17T07:17:57.738493
@@ -268,7 +268,7 @@ step-3-5-flash,Step 3.5 Flash,llm_api,1,30,,artificial_analysis,2026-03-30T07:14
 gpt-5-4-nano-(xhigh),GPT-5.4 nano (xhigh),llm_api,0,30,,artificial_analysis,2026-04-24T07:47:36.654441
 gpt-5-4-nano,GPT-5.4 nano,llm_api,0,30,,artificial_analysis,2026-03-31T07:01:39.796015
 gpt-5-4-mini-(medium),GPT-5.4 mini (medium),llm_api,0,30,,artificial_analysis,2026-03-24T06:52:23.532353
-glm-5-turbo,GLM 5 Turbo,llm_api,1,30,,artificial_analysis,2026-06-14T09:00:12.791931
+glm-5-turbo,GLM 5 Turbo,llm_api,1,30,,artificial_analysis,2026-06-15T11:42:23.877594
 glm-5v-turbo,GLM 5V Turbo,llm_api,1,30,,artificial_analysis,2026-04-23T07:21:22.065771
 mimo-v2-omni-0327,MiMo-V2-Omni-0327,llm_api,1,30,,artificial_analysis,2026-05-28T09:42:38.568279
 claude-sonnet-4-6-(non-reasoning),Claude Sonnet 4.6 (Non-reasoning),llm_api,0,30,,artificial_analysis,2026-05-27T08:59:10.516393
