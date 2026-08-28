@@ -1,7 +1,7 @@
 {
   "source": "civitai",
   "url": "https://civitai.com/api/v1/models?limit=20&sort=Highest%20Rated&types=Checkpoint&nsfw=false",
-  "scraped_at": "2026-08-27T17:00:44.393429",
+  "scraped_at": "2026-08-28T17:50:23.959102",
   "model_count": 20,
   "model_type": "Checkpoint",
   "models": [
@@ -14,9 +14,9 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1067359,
+        "downloads": 1068220,
         "favorites": null,
-        "comments": 1658,
+        "comments": 0,
         "base_model": "Pony",
         "model_type": "Checkpoint",
         "source": "civitai",
@@ -33,7 +33,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1246290,
+        "downloads": 1246645,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -52,7 +52,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1670753,
+        "downloads": 1671092,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -71,7 +71,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 2306439,
+        "downloads": 2307136,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5 Hyper",
@@ -90,7 +90,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 478620,
+        "downloads": 478708,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -109,7 +109,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 533578,
+        "downloads": 533678,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -128,7 +128,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 578187,
+        "downloads": 578213,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -147,7 +147,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 379768,
+        "downloads": 379894,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -166,7 +166,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1620439,
+        "downloads": 1621474,
         "favorites": null,
         "comments": 0,
         "base_model": "SDXL 1.0",
@@ -185,9 +185,9 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 562996,
+        "downloads": 563227,
         "favorites": null,
-        "comments": 0,
+        "comments": 648,
         "base_model": "Pony",
         "model_type": "Checkpoint",
         "source": "civitai",
@@ -204,7 +204,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 765234,
+        "downloads": 765571,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -223,7 +223,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 296013,
+        "downloads": 296027,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -242,7 +242,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 260258,
+        "downloads": 260327,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -261,7 +261,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 885356,
+        "downloads": 885578,
         "favorites": null,
         "comments": 331,
         "base_model": "SD 1.5",
@@ -280,7 +280,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 495863,
+        "downloads": 495972,
         "favorites": null,
         "comments": 0,
         "base_model": "SDXL 1.0",
@@ -299,7 +299,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 281206,
+        "downloads": 281320,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -318,7 +318,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 633961,
+        "downloads": 634199,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -337,7 +337,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 349679,
+        "downloads": 349776,
         "favorites": null,
         "comments": 0,
         "base_model": "Flux.1 D",
@@ -356,7 +356,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 262336,
+        "downloads": 262350,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -375,7 +375,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 511105,
+        "downloads": 511175,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
