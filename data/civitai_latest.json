@@ -1,7 +1,7 @@
 {
   "source": "civitai",
   "url": "https://civitai.com/api/v1/models?limit=20&sort=Highest%20Rated&types=Checkpoint&nsfw=false",
-  "scraped_at": "2026-10-24T09:57:40.312244",
+  "scraped_at": "2026-10-25T10:19:39.144256",
   "model_count": 20,
   "model_type": "Checkpoint",
   "models": [
@@ -14,9 +14,9 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1120707,
+        "downloads": 1121957,
         "favorites": null,
-        "comments": 1664,
+        "comments": 0,
         "base_model": "Pony",
         "model_type": "Checkpoint",
         "source": "civitai",
@@ -33,7 +33,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1262553,
+        "downloads": 1262864,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -52,7 +52,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 1695567,
+        "downloads": 1696231,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -71,7 +71,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 2352025,
+        "downloads": 2352879,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5 Hyper",
@@ -90,7 +90,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 484934,
+        "downloads": 485051,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -109,7 +109,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 540109,
+        "downloads": 540249,
         "favorites": null,
         "comments": 161,
         "base_model": "SD 1.5",
@@ -128,7 +128,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 580476,
+        "downloads": 580518,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -147,7 +147,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 387440,
+        "downloads": 387572,
         "favorites": null,
         "comments": 552,
         "base_model": "Pony",
@@ -159,25 +159,6 @@
     },
     {
       "rank": 9,
-      "name": "Juggernaut XL",
-      "id": "civitai-133005",
-      "category": "image_gen",
-      "is_open_source": true,
-      "metrics": {
-        "rating": null,
-        "rating_count": null,
-        "downloads": 1677882,
-        "favorites": null,
-        "comments": 891,
-        "base_model": "SDXL 1.0",
-        "model_type": "Checkpoint",
-        "source": "civitai",
-        "civitai_id": 133005,
-        "civitai_url": "https://civitai.com/models/133005"
-      }
-    },
-    {
-      "rank": 10,
       "name": "Pony Realism \ud83d\udd2e",
       "id": "civitai-372465",
       "category": "image_gen",
@@ -185,7 +166,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 575182,
+        "downloads": 575468,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -196,7 +177,7 @@
       }
     },
     {
-      "rank": 11,
+      "rank": 10,
       "name": "CyberRealistic Pony",
       "id": "civitai-443821",
       "category": "image_gen",
@@ -204,7 +185,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 784033,
+        "downloads": 784396,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -215,7 +196,7 @@
       }
     },
     {
-      "rank": 12,
+      "rank": 11,
       "name": "Cetus-Mix",
       "id": "civitai-6755",
       "category": "image_gen",
@@ -223,7 +204,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 298187,
+        "downloads": 298228,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -234,7 +215,7 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 12,
       "name": "Prefect Pony XL",
       "id": "civitai-439889",
       "category": "image_gen",
@@ -242,7 +223,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 264348,
+        "downloads": 264437,
         "favorites": null,
         "comments": 0,
         "base_model": "Pony",
@@ -253,7 +234,7 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 13,
       "name": "epiCRealism",
       "id": "civitai-25694",
       "category": "image_gen",
@@ -261,7 +242,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 901569,
+        "downloads": 901731,
         "favorites": null,
         "comments": 331,
         "base_model": "SD 1.5",
@@ -272,7 +253,7 @@
       }
     },
     {
-      "rank": 15,
+      "rank": 14,
       "name": "\u4e07\u8c61\u7194\u7089 | Anything XL",
       "id": "civitai-9409",
       "category": "image_gen",
@@ -280,7 +261,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 501060,
+        "downloads": 501126,
         "favorites": null,
         "comments": 208,
         "base_model": "SDXL 1.0",
@@ -291,7 +272,7 @@
       }
     },
     {
-      "rank": 16,
+      "rank": 15,
       "name": "GhostMix",
       "id": "civitai-36520",
       "category": "image_gen",
@@ -299,7 +280,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 283345,
+        "downloads": 283376,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -310,7 +291,7 @@
       }
     },
     {
-      "rank": 17,
+      "rank": 16,
       "name": "CyberRealistic",
       "id": "civitai-15003",
       "category": "image_gen",
@@ -318,7 +299,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 647655,
+        "downloads": 647920,
         "favorites": null,
         "comments": 282,
         "base_model": "SD 1.5",
@@ -329,7 +310,7 @@
       }
     },
     {
-      "rank": 18,
+      "rank": 17,
       "name": "FLUX",
       "id": "civitai-618692",
       "category": "image_gen",
@@ -337,7 +318,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 354164,
+        "downloads": 354269,
         "favorites": null,
         "comments": 0,
         "base_model": "Flux.1 D",
@@ -348,7 +329,7 @@
       }
     },
     {
-      "rank": 19,
+      "rank": 18,
       "name": "XXMix_9realistic",
       "id": "civitai-47274",
       "category": "image_gen",
@@ -356,7 +337,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 264341,
+        "downloads": 264383,
         "favorites": null,
         "comments": 0,
         "base_model": "SD 1.5",
@@ -367,7 +348,7 @@
       }
     },
     {
-      "rank": 20,
+      "rank": 19,
       "name": "Beautiful Realistic Asians",
       "id": "civitai-25494",
       "category": "image_gen",
@@ -375,7 +356,7 @@
       "metrics": {
         "rating": null,
         "rating_count": null,
-        "downloads": 516540,
+        "downloads": 516664,
         "favorites": null,
         "comments": 135,
         "base_model": "SD 1.5",
@@ -383,6 +364,25 @@
         "source": "civitai",
         "civitai_id": 25494,
         "civitai_url": "https://civitai.com/models/25494"
+      }
+    },
+    {
+      "rank": 20,
+      "name": "PerfectDeliberate",
+      "id": "civitai-24350",
+      "category": "image_gen",
+      "is_open_source": true,
+      "metrics": {
+        "rating": null,
+        "rating_count": null,
+        "downloads": 298457,
+        "favorites": null,
+        "comments": 0,
+        "base_model": "Illustrious",
+        "model_type": "Checkpoint",
+        "source": "civitai",
+        "civitai_id": 24350,
+        "civitai_url": "https://civitai.com/models/24350"
       }
     }
   ]
